@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Administrador - Zenith Massagem</title>
+    <!-- XLSX and SweetAlert2 dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-layout">
+    <!-- Sidebar / Menu Lateral -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <div class="logo">
+                <img src="Zenith Sidebar.png" alt="Logo Zenith" onerror="this.src='massagem-frontend/Zenith Sidebar.png'; this.onerror=null;" />
+            </div>
+            <h2 class="brand-text">Zenith</h2>
+        </div>
+        <nav class="sidebar-menu">
+            <button onclick="switchTab('dashboard')" class="menu-item active" id="btn-tab-dashboard">
+                <span class="menu-icon"><i class="fa-solid fa-chart-pie"></i></span> <span class="menu-text">Visão Geral</span>
+            </button>
+            <button onclick="switchTab('agendamentos')" class="menu-item" id="btn-tab-agendamentos">
+                <span class="menu-icon"><i class="fa-regular fa-calendar-check"></i></span> <span class="menu-text">Agendamentos</span>
+            </button>
+            <button onclick="switchTab('bloqueios')" class="menu-item" id="btn-tab-bloqueios">
+                <span class="menu-icon"><i class="fa-solid fa-sliders"></i></span> <span class="menu-text">Bloqueios & Dias</span>
+            </button>
+            <button onclick="switchTab('liberacao')" class="menu-item" id="btn-tab-liberacao">
+                <span class="menu-icon"><i class="fa-solid fa-lock-open"></i></span> <span class="menu-text">Liberar Mês</span>
+            </button>
+            <button onclick="switchTab('relatorios')" class="menu-item" id="btn-tab-relatorios">
+                <span class="menu-icon"><i class="fa-solid fa-chart-line"></i></span> <span class="menu-text">Relatórios</span>
+            </button>
+        </nav>
+        <div class="sidebar-footer">
+            <p class="footer-text">&copy; 2026 Zenith Corp.<br><small>Todos os direitos reservados.</small></p>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+        <!-- Top Header / Barra Superior -->
+        <header class="admin-topbar">
+            <div class="topbar-left">
+                <button onclick="toggleSidebar()" class="hamburger-btn" id="btn-hamburger" title="Recolher/Expandir Menu">
+                    ☰
+                </button>
+                <h1 id="active-tab-title">Visão Geral</h1>
+            </div>
+            <div class="topbar-right">
+                <button onclick="mostrarUltimoAgendamento()" class="topbar-btn" title="Últimos Agendamentos">
+                    <i class="fa-solid fa-clock-rotate-left"></i> Recentes
+                </button>
+                <button onclick="mostrarUltimasEdicoes()" class="topbar-btn" title="Últimas Edições">
+                    <i class="fa-solid fa-hourglass-half"></i> Edições
+                </button>
+                <button onclick="mostrarPainelPrincipal()" class="topbar-btn secondary" title="Voltar ao Topo">
+                    <i class="fa-solid fa-house"></i> Início
+                </button>
+            </div>
+        </header>
+
+        <!-- Dynamic Tabs Content -->
+
+        <!-- TAB: Dashboard / Overview -->
+        <section id="sec-dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon text-primary"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-info">
+                        <h4>Agendamentos Ativos</h4>
+                        <p id="stat-ativos-count">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon text-danger"><i class="fa-solid fa-ban"></i></div>
+                    <div class="stat-info">
+                        <h4>Agendamentos Cancelados</h4>
+                        <p id="stat-cancelados-count">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon text-warning"><i class="fa-solid fa-gear"></i></div>
+                    <div class="stat-info">
+                        <h4>Horários Bloqueados</h4>
+                        <p id="stat-bloqueios-count">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-widgets">
+                <div class="widget-card welcome-card">
+                    <h3>Bem-vindo ao Painel de Controle!</h3>
+                    <p>Use o menu lateral para gerenciar os agendamentos, configurar bloqueios de datas/horários, liberar novos meses para os colaboradores e gerar relatórios executivos.</p>
+                </div>
+                
+                <div class="widget-card quick-actions-card">
+                    <h3>Ações Rápidas</h3>
+                    <div class="quick-actions-grid">
+                        <button onclick="switchTab('agendamentos')" class="quick-btn"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar Usuário</button>
+                        <button onclick="switchTab('bloqueios')" class="quick-btn"><i class="fa-solid fa-ban"></i> Bloquear Data</button>
+                        <button onclick="switchTab('relatorios')" class="quick-btn"><i class="fa-solid fa-file-export"></i> Exportar Mês Atual</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: Agendamentos -->
+        <section id="sec-agendamentos" class="tab-content">
+            <div class="painel-agendamentos">
+                <!-- Agendamentos Ativos -->
+                <div class="box-agendamentos">
+                    <h2>Agendamentos Ativos</h2>
+                    <div class="admin-filter-bar">
+                        <label for="filtroDataAdmin"><strong>Filtrar por data:</strong></label>
+                        <input type="date" id="filtroDataAdmin">
+                        <button onclick="filtrarAgendamentosPorData()">Filtrar</button>
+                    </div>
+
+                    <!-- Popup com os resultados filtrados -->
+                    <div id="popupAgendamentosFiltrados" class="popup" style="display: none;">
+                        <div class="popup-conteudo">
+                            <span class="fechar" onclick="fecharPopupAgendamentosFiltrados()">×</span>
+                            <h3>Agendamentos do Dia Selecionado</h3>
+                            <div id="resultadoAgendamentosFiltrados"></div>
+                        </div>
+                    </div>
+
+                    <input type="text" id="pesquisaAtivos" placeholder="Pesquisar por nome..."
+                        onkeyup="filtrarAgendamentosAtivos()" class="campo-pesquisa">
+                    <div id="lista-agendamentos">
+                        <!-- Agendamentos ativos aparecerão aqui -->
+                    </div>
+
+                    <div class="botao-container">
+                        <button id="botao-apagar" onclick="apagarAgendamentosAtivos()">Apagar Agendamentos Ativos</button>
+                    </div>
+                </div>
+
+                <!-- Agendamentos Cancelados -->
+                <div class="box-agendamentos">
+                    <h2>Agendamentos Cancelados</h2>
+                    <input type="text" id="pesquisaCancelados" placeholder="Pesquisar por nome..."
+                        onkeyup="filtrarAgendamentosCancelados()" class="campo-pesquisa">
+                    <div id="lista-cancelados">
+                        <!-- Agendamentos cancelados aparecerão aqui -->
+                    </div>
+
+                    <div class="botao-container">
+                        <button id="botao-apagar" class="admin-btn-danger" onclick="apagarAgendamentosCancelados()">Apagar Agendamentos Cancelados</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: Bloqueios & Dias -->
+        <section id="sec-bloqueios" class="tab-content">
+            <h2 class="section-subtitle"><i class="fa-solid fa-stopwatch"></i> Gerenciamento de Horários</h2>
+            <div class="admin-grid">
+                <!-- Card: Bloquear Horário Específico -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-ban"></i></span>
+                        <h3>Bloquear Horário Específico</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <div class="container-bloqueio">
+                            <label for="dataBloqueio">Data de Bloqueio:</label>
+                            <input type="date" id="dataBloqueio">
+
+                            <div class="admin-btn-row">
+                                <button onclick="abrirPopupHorarios()">Selecionar Horários</button>
+                                <span id="quantidadeSelecionada" style="font-weight: bold; color: #152C4A;"></span>
+                            </div>
+                            <button onclick="confirmarBloqueioHorarios()" class="admin-btn-danger" style="width: 100%;">Bloquear Horários Selecionados</button>
+
+                            <!-- Popup dos horários -->
+                            <div id="popupHorarios" class="popup-overlay" style="display: none;">
+                                <div class="popup-conteudo">
+                                    <h3>Selecione os horários</h3>
+                                    <div class="botoes-horarios" id="botoesHorariosPopup">
+                                        <!-- Botões serão adicionados via JS -->
+                                    </div>
+                                    <br>
+                                    <button onclick="fecharPopupHorarios()">Confirmar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Desbloquear Horário Específico -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-lock-open"></i></span>
+                        <h3>Desbloquear Horário Específico</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <p class="card-description">Escolha uma data para visualizar e reativar os horários de massagem bloqueados.</p>
+                        <button onclick="document.getElementById('popupDesbloque').style.display='flex'" style="width: 100%; margin-top: 15px;">
+                            Buscar &amp; Desbloquear
+                        </button>
+
+                        <div id="popupDesbloque" class="popup">
+                            <div class="popup-content">
+                                <h2>Desbloquear Horários</h2>
+                                <input type="date" id="dataDesbloqueio" />
+                                <button onclick="carregarHorariosBloqueados()">Buscar</button>
+                                <div id="horariosBloqueadosLista"></div>
+                                <button class="fechar-btn"
+                                    onclick="document.getElementById('popupDesbloque').style.display='none'">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-subtitle" style="margin-top: 40px;"><i class="fa-regular fa-calendar-days"></i> Gerenciamento de Dias</h2>
+            <div class="admin-grid">
+                <!-- Card: Liberar Dia Específico -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-calendar-plus"></i></span>
+                        <h3>Liberar Dia Específico</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <label for="diaExtra">Data para Liberar:</label>
+                        <input type="date" id="diaExtra">
+                        <button onclick="liberarDiaExtra()" style="width: 100%;">Liberar Dia</button>
+                    </div>
+                </div>
+
+                <!-- Card: Remover Dia Liberado -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-circle-xmark"></i></span>
+                        <h3>Remover Dia Liberado</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <label for="diaRemover">Data para Remover:</label>
+                        <input type="date" id="diaRemover">
+                        <button onclick="removerDiaExtra()" class="admin-btn-danger" style="width: 100%;">Remover Dia</button>
+                    </div>
+                </div>
+
+                <!-- Card: Bloquear Dia -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-calendar-xmark"></i></span>
+                        <h3>Bloquear Dia Inteiro</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <label for="diaBloquear">Data para Bloquear:</label>
+                        <input type="date" id="diaBloquear">
+                        <button onclick="bloquearDia()" class="admin-btn-danger" style="width: 100%;">Bloquear Dia</button>
+                    </div>
+                </div>
+
+                <!-- Card: Desbloquear Dia -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-arrows-rotate"></i></span>
+                        <h3>Desbloquear Dia Inteiro</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <label for="diaDesbloquear">Data para Desbloquear:</label>
+                        <input type="date" id="diaDesbloquear">
+                        <button onclick="desbloquearDia()" style="width: 100%;">Desbloquear Dia</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: Liberação de Mês -->
+        <section id="sec-liberacao" class="tab-content">
+            <div class="admin-grid">
+                <!-- Card: Liberar Mês -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-calendar-check"></i></span>
+                        <h3>Liberar Mês de Agendamento</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <label for="anoLiberado">Ano:</label>
+                        <input type="number" id="anoLiberado" value="2026" min="2024" max="2100">
+
+                        <label for="mesLiberado">Mês:</label>
+                        <select id="mesLiberado">
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+
+                        <button onclick="liberarMes()" style="width: 100%;">Liberar Mês</button>
+                    </div>
+                </div>
+
+                <!-- Card: Liberação Próximo Mês -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-bullhorn"></i></span>
+                        <h3>Notícia de Liberação</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <label for="dataLiberacao">Data:</label>
+                        <input type="date" id="dataLiberacao">
+
+                        <label for="horarioLiberacao">Horário:</label>
+                        <input type="time" id="horarioLiberacao">
+
+                        <div class="admin-btn-row">
+                            <button onclick="salvarNoticiaLiberacao()" style="flex: 1;">Salvar Notícia</button>
+                            <button onclick="removerNoticiaLiberacao()" class="admin-btn-danger" style="flex: 1;">Remover</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: Relatórios -->
+        <section id="sec-relatorios" class="tab-content">
+            <div class="admin-grid">
+                <!-- Card: Relatório do Mês -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-solid fa-chart-bar"></i></span>
+                        <h3>Relatório Mensal</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <label for="anoRelatorio">Selecione o ano:</label>
+                        <select id="anoRelatorio">
+                            <option value="2026" selected>2026</option>
+                            <option value="2027">2027</option>
+                        </select>
+
+                        <label for="mesRelatorio">Selecione o mês:</label>
+                        <select id="mesRelatorio">
+                            <option value="1">Janeiro</option>
+                            <option value="2">Fevereiro</option>
+                            <option value="3">Março</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Maio</option>
+                            <option value="6">Junho</option>
+                            <option value="7">Julho</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Setembro</option>
+                            <option value="10">Outubro</option>
+                            <option value="11">Novembro</option>
+                            <option value="12">Dezembro</option>
+                        </select>
+
+                        <button onclick="exportarRelatorioExcel()" style="width: 100%;">Gerar Relatório Excel</button>
+                    </div>
+                </div>
+
+                <!-- Card: Relatório do Dia -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <span class="admin-card-icon"><i class="fa-regular fa-calendar"></i></span>
+                        <h3>Relatório Diário</h3>
+                    </div>
+                    <div class="admin-card-body">
+                        <label for="dataRelatorioDia">Selecione o dia:</label>
+                        <input type="date" id="dataRelatorioDia" />
+                        <button onclick="gerarRelatorioDia()" style="width: 100%;">Gerar Relatório do Dia</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- ====================================
+     POPUPS E DIÁLOGOS DE INTERAÇÃO
+     ==================================== -->
+
+<!-- POPUP DE EDIÇÃO -->
+<div id="editarPopup" class="editar-popup" style="display: none;">
+    <div class="editar-box">
+        <h3>Editar Agendamento</h3>
+        <input type="text" id="editarNome" placeholder="Nome" />
+        <input type="email" id="editarEmail" placeholder="Email" />
+        <input type="text" id="editarData" placeholder="Data (DD/MM/AAAA)" />
+        <input type="text" id="editarHorario" placeholder="Horário" />
+        <button onclick="salvarEdicao()">Salvar</button>
+        <button onclick="fecharEdicao()">Cancelar</button>
+    </div>
+</div>
+
+<!-- POPUP DE CONFIRMAÇÃO DE CANCELAMENTO -->
+<div id="popupConfirmacaoCancelamento" class="popup-overlay" style="display: none;">
+    <div class="popup-box">
+        <h3>Você tem certeza que deseja cancelar?</h3>
+        <button onclick="confirmarCancelamento()">Sim</button>
+        <button onclick="fecharPopupCancelamento()">Não</button>
+    </div>
+</div>
+
+<!-- Alertas flutuantes -->
+<div id="alerta-personalizado" class="alerta" style="display: none;"></div>
+
+<!-- Popup Histórico de Edições -->
+<div id="popupHistorico" class="popup-overlay" style="display: none;">
+    <div class="popup-box">
+        <h3>Histórico de Edições</h3>
+        <div id="listaHistoricoEdicoes"></div>
+        <button onclick="fecharPopupHistorico()">Fechar</button>
+    </div>
+</div>
+
+<!-- Popup Últimas Edições -->
+<div id="popupHistoricoUsuario" class="popup-overlay" style="display: none;">
+    <div class="popup-box">
+        <h2>Últimas Edições</h2>
+        <div id="historicoUsuario"></div>
+        <button onclick="document.getElementById('popupHistoricoUsuario').style.display = 'none'">Fechar</button>
+    </div>
+</div>
+
+<!-- Popup Último Agendamento -->
+<div id="popupUltimoAgendamento" class="popup-overlay" style="display: none;">
+    <div class="popup-box">
+        <h3>Últimos Agendamentos</h3>
+        <div id="conteudoUltimoAgendamento">
+            <!-- Conteúdo preenchido via JS -->
+        </div>
+        <button onclick="document.getElementById('popupUltimoAgendamento').style.display='none'">Fechar</button>
+    </div>
+</div>
+
+<!-- Script do Dashboard e Alternador de Abas -->
+<script>
+    function switchTab(tabId) {
+        // Remove class active de todas as abas e botões do menu
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.sidebar-menu .menu-item').forEach(el => el.classList.remove('active'));
+
+        // Adiciona classe active no selecionado
+        const targetTab = document.getElementById('sec-' + tabId);
+        const targetBtn = document.getElementById('btn-tab-' + tabId);
+        
+        if (targetTab) targetTab.classList.add('active');
+        if (targetBtn) targetBtn.classList.add('active');
+
+        // Altera o título da barra superior
+        const titles = {
+            'dashboard': 'Visão Geral',
+            'agendamentos': 'Lista de Agendamentos',
+            'bloqueios': 'Bloqueios & Configurações de Dias',
+            'liberacao': 'Liberação de Mês',
+            'relatorios': 'Gerar Relatórios'
+        };
+        document.getElementById('active-tab-title').innerText = titles[tabId] || 'Painel de Controle';
+
+        // Atualiza estatísticas se for para a tela de Visão Geral
+        if (tabId === 'dashboard') {
+            atualizarEstatisticasDashboard();
+        }
+        
+        // Rola o container principal para o topo
+        document.querySelector('.admin-main').scrollTop = 0;
+    }
+
+    function toggleSidebar() {
+        const layout = document.querySelector('.admin-layout');
+        layout.classList.toggle('collapsed');
+        const isCollapsed = layout.classList.contains('collapsed');
+        localStorage.setItem('adminSidebarCollapsed', isCollapsed ? 'true' : 'false');
+    }
+
+    function atualizarEstatisticasDashboard() {
+        try {
+            // Conta agendamentos
+            const agendamentos = typeof getLocalData === 'function' ? getLocalData("agendamentos", []) : [];
+            const ativos = agendamentos.filter(a => !a.oculto && a.cancelado == 0).length;
+            const cancelados = agendamentos.filter(a => a.cancelado == 1).length;
+            
+            // Conta bloqueios
+            const bloqueiosObj = typeof getLocalData === 'function' ? getLocalData("bloqueiosHorario", {}) : {};
+            let totalBloqueios = 0;
+            for (const data in bloqueiosObj) {
+                if (Array.isArray(bloqueiosObj[data])) {
+                    totalBloqueios += bloqueiosObj[data].length;
+                }
+            }
+
+            document.getElementById("stat-ativos-count").innerText = ativos;
+            document.getElementById("stat-cancelados-count").innerText = cancelados;
+            document.getElementById("stat-bloqueios-count").innerText = totalBloqueios;
+        } catch (e) {
+            console.error("Erro ao carregar estatísticas do dashboard:", e);
+        }
+    }
+
+    // Inicialização ao carregar a página
+    document.addEventListener("DOMContentLoaded", function() {
+        // Carrega estado colapsado anterior da sidebar
+        const sidebarState = localStorage.getItem('adminSidebarCollapsed');
+        if (sidebarState === 'true') {
+            document.querySelector('.admin-layout').classList.add('collapsed');
+        }
+
+        // Primeira atualização das estatísticas
+        setTimeout(atualizarEstatisticasDashboard, 500);
+        
+        // Expor a função globalmente para chamadas externas se necessário
+        window.atualizarEstatisticasDashboard = atualizarEstatisticasDashboard;
+    });
+</script>
+
+<script src="script.js"></script>
+</body>
+</html>

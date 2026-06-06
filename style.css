@@ -1,0 +1,2333 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+}
+
+/* Containers principais */
+.background-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    height: 100vh;
+    flex-wrap: wrap;
+}
+
+.background-container2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    height: 100vh;
+    flex-wrap: wrap;
+}
+
+.containerr {
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.container,
+.container2 {
+    background-color: rgba(255, 255, 255, 0.5);
+    /* antes era white */
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.container {
+    width: 300px;
+}
+
+.container2 {
+    width: 400px;
+}
+
+.logo img {
+    max-width: 200px;
+    margin-bottom: -1px;
+}
+
+.container h1 {
+    margin-top: 20px;
+    color: #1E3A5F;
+}
+
+/* Inputs e botões */
+input,
+select {
+    padding: 10px;
+    margin: 5px;
+    width: 90%;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #1E3A5F;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #152C4A;
+}
+
+/* Botão do topo (Admin) */
+.btn-adm-topo {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #1E3A5F;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+/* Calendário */
+#calendario-container {
+    margin-top: 20px;
+}
+
+#mes-atual {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+.dias-semana,
+.calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.dias-semana {
+    font-weight: bold;
+    color: #000000;
+}
+
+.calendario {
+    gap: 5px;
+}
+
+.calendario div {
+    padding: 10px;
+    background-color: #f7f7f7;
+    border-radius: 6px;
+}
+
+.calendario div.ativo {
+    background-color: #1E3A5F;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.calendario div.ativo.selecionado {
+    background-color: #1E3A5F;
+    /* azul */
+    color: white;
+}
+
+.calendario div.ativo:hover {
+    background-color: #C87533;
+}
+
+/* Pop-ups */
+.login-popup,
+.popup-overlay,
+.popup {
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup.show,
+.login-popup.show {
+    display: none;
+}
+
+.login-box,
+.popup-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 300px;
+    z-index: 9999;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-box input,
+.popup-box input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+}
+
+.login-box button,
+.popup-box button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #152C4A;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-box button:hover,
+.popup-box button:hover {
+    background-color: #152C4A;
+}
+
+.popup-box button:nth-child(2) {
+    background-color: #dc3545;
+}
+
+.popup-box button:nth-child(2):hover {
+    background-color: #c82333;
+}
+
+/* Editar agendamento */
+.editar-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.editar-box {
+    background-color: white;
+    padding: 25px;
+    border-radius: 16px;
+    width: 350px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.editar-box input {
+    width: 90%;
+    margin: 8px 0;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+}
+
+/* Agendamento item */
+.agendamento-item {
+    background-color: #e9f5ff;
+    border: 1px solid #cce5ff;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 10px 0;
+    text-align: left;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.agendamento-item p {
+    margin: 5px 0;
+}
+
+.agendamento-item button {
+    font-family: 'Montserrat', sans-serif;
+    margin-right: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    background-color: #1E3A5F;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.agendamento-item button:hover {
+    background-color: #1E3A5F;
+}
+
+/* Mensagem e alerta */
+.mensagem-oculta {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.mensagem-visivel {
+    display: block;
+}
+
+.alerta {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 16px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.alerta.sucesso {
+    background-color: #4caf50;
+}
+
+.alerta.erro {
+    background-color: #f44336;
+}
+
+.alerta.info {
+    background-color: #1E3A5F;
+}
+
+/* Layouts */
+.layout-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    padding: 40px;
+    flex-wrap: wrap;
+}
+
+.lado-esquerdo {
+    flex: 1;
+    background: linear-gradient(135deg, #152C4A, #1E3A5F);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+}
+
+.lado-esquerdo .logo img {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+.lado-esquerdo h2 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.lado-esquerdo p {
+    font-size: 18px;
+}
+
+.lado-direito {
+    flex: 1;
+    background-color: #f5f7fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+/* Formulários */
+.form-container,
+.caixa-formulario {
+    background-color: rgba(255, 255, 255, 0.8);
+    /* antes era white */
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-container input,
+.form-container select,
+.caixa-formulario input,
+.caixa-formulario select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.form-container button,
+.caixa-formulario button {
+    width: 100%;
+    padding: 14px;
+    background-color: #1E3A5F;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.form-container button:hover,
+.caixa-formulario button:hover {
+    background-color: #1E3A5F;
+}
+
+/* Info box */
+.caixa-info {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+.caixa-info .logo img {
+    max-width: 100px;
+    margin-bottom: 15px;
+}
+
+.caixa-info h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    color: #152C4A;
+}
+
+.caixa-info p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Fundo escuro de login admin */
+#adminLoginBackground {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+}
+
+/* Container de login admin */
+#loginContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 999;
+}
+
+#loginContainer input[type="text"],
+#loginContainer input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#loginContainer button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 50px;
+    background-color: #152C4A;
+    color: white;
+    cursor: pointer;
+}
+
+#loginContainer button:hover {
+    background-color: #1E3A5F;
+}
+
+/* Área de edição destacada */
+.area-edicao {
+    background-color: #fdf0d5;
+    padding: 20px;
+    border: 2px dashed #D4943A;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+/* Modo admin edição */
+.admin-edicao-ativa {
+    transition: background 0.5s ease-in-out;
+}
+
+.painel-agendamentos {
+    display: flex;
+    justify-content: space-between;
+    /* Distribui os elementos uniformemente */
+    gap: 20px;
+    /* Espaçamento entre os quadros */
+    flex-wrap: nowrap;
+    /* Impede que os elementos quebrem para a próxima linha */
+    align-items: flex-start;
+    /* Garante um alinhamento adequado */
+}
+
+.box-agendamentos {
+    width: 50%;
+    /* Define um tamanho fixo para cada bloco */
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    min-width: 350px;
+    /* Evita que fiquem muito pequenos */
+}
+
+.box-agendamentos h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #152C4A;
+}
+
+.botao-container {
+    display: flex;
+    justify-content: center;
+    /* Centraliza o botão */
+    width: 100%;
+    margin-top: 30px;
+    /* Adiciona um espaço entre o painel e o botão */
+    flex-basis: 100%;
+    /* Faz com que ocupe toda a largura disponível */
+}
+
+#botao-apagar {
+    padding: 12px 20px;
+    background-color: #dc3545;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#botao-apagar:hover {
+    background-color: #c82333;
+}
+
+#botao-apagar-todos {
+    padding: 12px 20px;
+    background-color: #dc3545;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#botao-apagar-todos:hover {
+    background-color: #c82333;
+}
+
+.relatorio-container {
+    & h2 {
+        color: #152C4A;
+    }
+}
+
+.logo {
+    & h2 {
+        color: #152C4A;
+    }
+}
+
+.relatorio-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.popup-box {
+    text-align: center;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 15px 12px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+body {
+    background-image: url("./Massagem.png");
+    background-size: cover;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Deixa o fundo levemente escurecido */
+    z-index: -1;
+}
+
+.desativado {
+    background-color: #ddd;
+    color: #888;
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#calendarioTerceiros-container {
+    width: 100%;
+    max-width: 1100px;
+    /* Aumentado horizontalmente */
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+#calendarioTerceiros {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.dia-calendario {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.dia-vazio {
+    background-color: transparent;
+}
+
+.desativado {
+    background-color: #ddd;
+    color: #888;
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.destacado {
+    background-color: #D4943A;
+    /* Dias futuros ficam amarelos */
+}
+
+.clicavel {
+    background-color: #C87533;
+    /* Quartas e sextas ficam destacadas */
+    cursor: pointer;
+}
+
+.clicavel:hover {
+    background-color: #D4943A;
+}
+
+#botao-liberar-agendamento {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    /* <-- era 130px, agora vai grudar mais no canto */
+    background-color: #1E3A5F;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+
+#botao-liberar-agendamento:hover {
+    background-color: #1E3A5F;
+}
+
+#botao-liberar-agendamento {
+    position: fixed;
+    top: 20px;
+    right: 130px;
+    background-color: #1E3A5F;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-box {
+    background: white;
+    padding: 50px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    width: 350px;
+    text-align: center;
+}
+
+.calendario div.desativado {
+    background-color: #ccc !important;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.feriado {
+    background-color: #ff4d4d !important;
+    /* vermelho forte */
+    color: white !important;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.hoje {
+    background-color: #999 !important;
+    /* cinza mais escuro */
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.legenda-calendario {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.legenda-calendario span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.bolinha {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.bolinha.amarelo {
+    background-color: #1E3A5F;
+    border: 1px solid #1E3A5F;
+}
+
+.bolinha.vermelho {
+    background-color: red;
+}
+
+.bolinha.cinza {
+    background-color: #ccc;
+}
+
+.bolinha.hoje {
+    background-color: #666;
+}
+
+.grade-horarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.botao-horario {
+    background-color: #152C4A;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.botao-horario:hover {
+    background-color: #C87533;
+}
+
+.botao-horario.selecionado {
+    background-color: #152C4A;  /* Azul petróleo */
+    color: white;
+    font-weight: bold;
+}
+
+.botao-horario.ocupado {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+.contador-tempo {
+    font-size: 13px;
+    color: red;
+    font-weight: bold;
+    margin-top: 4px;
+    text-align: center;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+.campo-pesquisa {
+    width: 90%;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.popup-conteudo {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.popup .fechar {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.popup-conteudo {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.agendamento-box {
+    background-color: #f1f8ff;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border-left: 5px solid #152C4A;
+}
+
+.agendamento-box p {
+    margin: 4px 0;
+}
+
+.botoes-filtrados {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.botoes-filtrados button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #152C4A;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.botoes-filtrados button:hover {
+    background-color: #1E3A5F;
+}
+
+.marquee {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.marquee span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll-text 6s linear infinite;
+    will-change: transform;
+}
+
+.marquee:hover span {
+    animation-play-state: paused;
+}
+
+@keyframes scroll-text {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+#popupMotivacional {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #C87533;
+    color: #152C4A;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#popupMotivacional span {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scrollPopup 10s linear infinite;
+}
+
+@keyframes scrollPopup {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.botoes-horarios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.horario-btn {
+    background-color: #152C4A;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.horario-btn:hover {
+    background-color: #152C4A;
+}
+
+.horario-btn.selecionado {
+    background-color: #1E3A5F;
+    box-shadow: 0 0 5px #1E3A5F;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-conteudo {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: center;
+}
+
+.botoes-horarios {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.horario-btn {
+    background-color: #152C4A;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.horario-btn:hover {
+    background-color: #152C4A;
+}
+
+.horario-btn.selecionado {
+    background-color: #1E3A5F;
+    box-shadow: 0 0 5px #1E3A5F;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-conteudo {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: center;
+}
+
+.botao-horario.bloqueado {
+    background-color: #cccccc;
+    color: #666;
+    cursor: not-allowed;
+    border: 1px solid #888;
+}
+
+/* Estilização do popup de desbloqueio */
+#popupDesbloque {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+
+#popupDesbloque .popup-conteudo,
+#popupDesbloque .popup-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 460px; /* ou 440px se preferir mais compacto */
+  width: 100%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* ✅ Impede scroll */
+  text-align: center;
+}
+
+#popupDesbloque input[type="date"] {
+  width: 200px;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+#popupDesbloque button {
+  margin: 8px;
+  padding: 8px 18px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#popupDesbloque .desbloquear-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+#popupDesbloque .fechar-btn {
+  background-color: #152C4A;
+  color: white;
+}
+
+#horariosBloqueadosLista {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #333;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.barra-icones-centralizada {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    background-color: #152C4A;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.barra-icones-centralizada button {
+    background-color: white;
+    border: none;
+    font-size: 20px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.barra-icones-centralizada button:hover {
+    background-color: #1E3A5F;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999;
+}
+
+.popup-box {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    text-align: center;
+}
+
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.logo-bb {
+position: fixed;
+bottom: 70px;     /* controla a altura: mais alto = valor maior */
+right: 140px;      /* controla a distância da borda direita: mais para a esquerda = valor maior */
+width: 300px;
+height: auto;
+z-index: 9999;
+}
+
+
+/* ================================================
+   PAINEL DO ADMINISTRADOR — Estilos exclusivos
+   Tudo dentro de .admin-page para não afetar
+   a página de agendamento.
+   ================================================ */
+
+.admin-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 24px 60px;
+}
+
+/* ---------- Header do Admin ---------- */
+.admin-header {
+    margin-bottom: 10px;
+}
+
+.admin-header-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-header-inner .logo img {
+    max-width: 160px;
+}
+
+.admin-header-inner h2 {
+    color: #152C4A;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ---------- Grid de Cards ---------- */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 22px;
+    margin-bottom: 36px;
+}
+
+/* ---------- Card ---------- */
+.admin-card {
+    background-color: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-card:hover {
+    box-shadow: 0 6px 24px rgba(30, 58, 95, 0.12);
+    transform: translateY(-3px);
+}
+
+.admin-card-wide {
+    grid-column: 1 / -1;
+}
+
+/* Card Header */
+.admin-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 22px 14px;
+    border-bottom: 2px solid #DBEAFE;
+}
+
+.admin-card-icon {
+    font-size: 1.4rem;
+}
+
+.admin-card-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #152C4A;
+}
+
+/* Card Body */
+.admin-card-body {
+    padding: 18px 22px 22px;
+    flex: 1;
+}
+
+.admin-card-body label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.admin-card-body label:first-child {
+    margin-top: 0;
+}
+
+.admin-card-body input,
+.admin-card-body select {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 4px 0 6px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    box-sizing: border-box;
+}
+
+.admin-card-body input:focus,
+.admin-card-body select:focus {
+    border-color: #1E3A5F;
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+    outline: none;
+}
+
+.admin-card-body button {
+    margin-top: 12px;
+}
+
+/* ---------- Botão danger do admin ---------- */
+.admin-btn-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.admin-btn-danger:hover {
+    background-color: #c82333 !important;
+}
+
+/* ---------- Linha de botões ---------- */
+.admin-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.admin-btn-row button {
+    margin-top: 0;
+}
+
+/* ---------- Divider dentro do card ---------- */
+.admin-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #BFDBFE, transparent);
+    margin: 18px 0;
+}
+
+/* ---------- Grid de dias (Gerenciar Dias) ---------- */
+.admin-dias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.admin-dia-item {
+    background-color: #EFF6FF;
+    border: 1px solid #BFDBFE;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.admin-dia-item:hover {
+    border-color: #1E3A5F;
+    box-shadow: 0 2px 10px rgba(30, 58, 95, 0.08);
+}
+
+.admin-dia-item h4 {
+    margin: 0 0 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #152C4A;
+}
+
+.admin-dia-item input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+}
+
+.admin-dia-item input:focus {
+    border-color: #1E3A5F;
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+    outline: none;
+}
+
+.admin-dia-item button {
+    width: 100%;
+    margin-top: 4px;
+}
+
+/* ---------- Filter bar nos agendamentos ---------- */
+.admin-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    background-color: #EFF6FF;
+    border-radius: 8px;
+    border: 1px solid #BFDBFE;
+}
+
+.admin-filter-bar label {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.admin-filter-bar input {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    font-size: 0.85rem;
+    width: auto;
+    flex: 1;
+    min-width: 150px;
+}
+
+.admin-filter-bar button {
+    margin-top: 0;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
+
+/* ---------- Painel de agendamentos melhorado ---------- */
+.admin-page .painel-agendamentos {
+    margin-top: 10px;
+}
+
+.admin-page .box-agendamentos {
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease;
+}
+
+.admin-page .box-agendamentos:hover {
+    box-shadow: 0 6px 24px rgba(30, 58, 95, 0.1);
+}
+
+.admin-page .box-agendamentos h2 {
+    font-size: 1.1rem;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #DBEAFE;
+    margin-bottom: 16px;
+}
+
+/* ---------- Campo de pesquisa melhorado ---------- */
+.admin-page .campo-pesquisa {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    box-sizing: border-box;
+}
+
+.admin-page .campo-pesquisa:focus {
+    border-color: #1E3A5F;
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+    outline: none;
+}
+
+/* ---------- Agendamento items melhorados ---------- */
+.admin-page .agendamento-item {
+    border-radius: 10px;
+    border-left: 4px solid #1E3A5F;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-page .agendamento-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 3px 12px rgba(30, 58, 95, 0.1);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 768px) {
+    .admin-page {
+        padding: 20px 12px 40px;
+    }
+
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-card-wide {
+        grid-column: auto;
+    }
+
+    .admin-dias-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-header-inner h2 {
+        font-size: 1.3rem;
+    }
+
+    .admin-page .painel-agendamentos {
+        flex-direction: column;
+    }
+
+    .admin-page .box-agendamentos {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .admin-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-btn-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* ==========================================================================
+   PAINEL DO ADMINISTRADOR - DASHBOARD PREMIUM COM SIDEBAR
+   ========================================================================== */
+
+/* ---------- Body Admin (sem imagem de fundo) ---------- */
+body.admin-body {
+    background-image: none !important;
+    background-color: #f3f4f6 !important;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+body.admin-body::before {
+    display: none !important;
+}
+
+/* ---------- Layout Principal ---------- */
+.admin-layout {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* ===== SIDEBAR ===== */
+.admin-sidebar {
+    width: 260px;
+    background-color: #0F1F33;
+    color: #BFDBFE;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-shrink: 0;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    transition: width 0.3s ease;
+    overflow: hidden;
+}
+
+.admin-layout.collapsed .admin-sidebar {
+    width: 72px;
+}
+
+/* Sidebar Brand */
+.sidebar-brand {
+    padding: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+
+.sidebar-brand .logo img {
+    max-height: 48px;
+    width: auto;
+    max-width: 100%;
+    transition: max-height 0.3s ease;
+}
+
+.admin-layout.collapsed .sidebar-brand .logo img {
+    max-height: 32px;
+}
+
+.sidebar-brand .brand-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    letter-spacing: 0.5px;
+    transition: opacity 0.2s ease;
+}
+
+.admin-layout.collapsed .sidebar-brand .brand-text {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.sidebar-menu .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    color: #7CB3F0;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.sidebar-menu .menu-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.sidebar-menu .menu-item.active {
+    background: linear-gradient(135deg, #2563EB, #7CB3F0);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.menu-icon {
+    font-size: 1.2rem;
+    min-width: 24px;
+    text-align: center;
+}
+
+.menu-text {
+    transition: opacity 0.2s ease;
+}
+
+.admin-layout.collapsed .menu-text {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+}
+
+.admin-layout.collapsed .sidebar-menu .menu-item {
+    justify-content: center;
+    padding: 12px;
+    gap: 0;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.sidebar-footer .footer-text {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+    transition: opacity 0.2s ease;
+}
+
+.admin-layout.collapsed .sidebar-footer .footer-text {
+    opacity: 0;
+    font-size: 0;
+}
+
+/* ===== MAIN CONTENT AREA ===== */
+.admin-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    background-color: #f3f4f6;
+}
+
+/* ===== TOP BAR ===== */
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    height: 64px;
+    min-height: 64px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 99;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.topbar-left h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0F1F33;
+    margin: 0;
+}
+
+/* Hamburger Button */
+.hamburger-btn {
+    background: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 6px 10px;
+    color: #2563EB;
+    transition: all 0.25s ease;
+    margin-top: 0;
+    line-height: 1;
+}
+
+.hamburger-btn:hover {
+    background-color: #DBEAFE;
+    border-color: #2563EB;
+}
+
+/* Topbar Right */
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.topbar-btn {
+    background-color: #DBEAFE;
+    color: #2563EB;
+    border: 1px solid #BFDBFE;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 0;
+}
+
+.topbar-btn:hover {
+    background-color: #2563EB;
+    color: #fff;
+    border-color: #2563EB;
+}
+
+.topbar-btn.secondary {
+    background-color: #f9fafb;
+    color: #374151;
+    border-color: #d1d5db;
+}
+
+.topbar-btn.secondary:hover {
+    background-color: #374151;
+    color: #fff;
+}
+
+/* ===== TABS / SECTIONS ===== */
+.tab-content {
+    display: none;
+    padding: 28px;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== DASHBOARD STATS ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: #fff;
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.12);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background-color: #DBEAFE;
+}
+
+.stat-icon.text-primary { background-color: #BFDBFE; }
+.stat-icon.text-danger { background-color: #ffe0e6; }
+.stat-icon.text-warning { background-color: #fff3cd; }
+
+.stat-info h4 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 4px;
+}
+
+.stat-info p {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0F1F33;
+    margin: 0;
+    line-height: 1;
+}
+
+/* ===== DASHBOARD WIDGETS ===== */
+.dashboard-widgets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+}
+
+.widget-card {
+    background-color: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.widget-card h3 {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #0F1F33;
+}
+
+.widget-card p {
+    font-size: 0.88rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.welcome-card {
+    border-left: 4px solid #2563EB;
+}
+
+.quick-actions-grid {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.quick-btn {
+    padding: 10px 18px;
+    background-color: #DBEAFE;
+    color: #2563EB;
+    border: 1px solid #BFDBFE;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 0;
+}
+
+.quick-btn:hover {
+    background-color: #2563EB;
+    color: #fff;
+    border-color: #2563EB;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* ===== SECTION SUBTITLES ===== */
+.section-subtitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0F1F33;
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.card-description {
+    font-size: 0.85rem;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0 0 10px;
+}
+
+/* ===== ADMIN CARDS DENTRO DO DASHBOARD ===== */
+.admin-body .admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 22px;
+    margin-bottom: 36px;
+}
+
+.admin-body .admin-card {
+    background-color: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-body .admin-card:hover {
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.12);
+    transform: translateY(-3px);
+}
+
+.admin-body .admin-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 22px 14px;
+    border-bottom: 2px solid #DBEAFE;
+}
+
+.admin-body .admin-card-icon {
+    font-size: 1.4rem;
+}
+
+.admin-body .admin-card-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #0F1F33;
+}
+
+.admin-body .admin-card-body {
+    padding: 18px 22px 22px;
+    flex: 1;
+}
+
+.admin-body .admin-card-body label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.admin-body .admin-card-body label:first-child {
+    margin-top: 0;
+}
+
+.admin-body .admin-card-body input,
+.admin-body .admin-card-body select {
+    width: 100%;
+    padding: 10px 12px;
+    margin: 4px 0 6px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    box-sizing: border-box;
+}
+
+.admin-body .admin-card-body input:focus,
+.admin-body .admin-card-body select:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+.admin-body .admin-card-body button {
+    margin-top: 12px;
+}
+
+/* ---------- Botão danger ---------- */
+.admin-body .admin-btn-danger {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.admin-body .admin-btn-danger:hover {
+    background-color: #c82333 !important;
+}
+
+/* ---------- Linha de botões ---------- */
+.admin-body .admin-btn-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+}
+
+.admin-body .admin-btn-row button {
+    margin-top: 0;
+}
+
+/* ---------- Painel de agendamentos ---------- */
+.admin-body .painel-agendamentos {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.admin-body .box-agendamentos {
+    flex: 1;
+    min-width: 320px;
+    background-color: #fff;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.3s ease;
+}
+
+.admin-body .box-agendamentos:hover {
+    box-shadow: 0 6px 24px rgba(37, 99, 235, 0.1);
+}
+
+.admin-body .box-agendamentos h2 {
+    font-size: 1.1rem;
+    color: #0F1F33;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #DBEAFE;
+    margin-bottom: 16px;
+    margin-top: 0;
+}
+
+/* ---------- Campo de pesquisa ---------- */
+.admin-body .campo-pesquisa {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+}
+
+.admin-body .campo-pesquisa:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+/* ---------- Filter bar ---------- */
+.admin-body .admin-filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    background-color: #EFF6FF;
+    border-radius: 8px;
+    border: 1px solid #BFDBFE;
+}
+
+.admin-body .admin-filter-bar label {
+    margin: 0;
+    font-size: 0.85rem;
+    text-transform: none;
+}
+
+.admin-body .admin-filter-bar input {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1.5px solid #ddd;
+    font-size: 0.85rem;
+    width: auto;
+    flex: 1;
+    min-width: 150px;
+}
+
+.admin-body .admin-filter-bar button {
+    margin-top: 0;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
+
+/* ---------- Agendamento items ---------- */
+.admin-body .agendamento-item {
+    border-radius: 10px;
+    border-left: 4px solid #2563EB;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-body .agendamento-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 3px 12px rgba(37, 99, 235, 0.1);
+}
+
+/* ---------- Botão container ---------- */
+.admin-body .botao-container {
+    margin-top: 16px;
+}
+
+.admin-body .botao-container button {
+    width: 100%;
+}
+
+/* ===== RESPONSIVO - DASHBOARD ===== */
+@media (max-width: 900px) {
+    .admin-layout {
+        flex-direction: column;
+        height: auto;
+        overflow: auto;
+    }
+
+    .admin-sidebar {
+        width: 100% !important;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+    }
+
+    .sidebar-brand {
+        padding: 12px 16px;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .sidebar-brand .logo img {
+        max-height: 32px;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        padding: 0 8px;
+        gap: 4px;
+        overflow-x: auto;
+    }
+
+    .sidebar-menu .menu-item {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+
+    .sidebar-footer {
+        display: none;
+    }
+
+    .admin-layout.collapsed .admin-sidebar {
+        width: 100% !important;
+    }
+
+    .admin-layout.collapsed .menu-text {
+        opacity: 1;
+        width: auto;
+    }
+
+    .admin-layout.collapsed .sidebar-brand .brand-text {
+        opacity: 1;
+        height: auto;
+    }
+
+    .admin-main {
+        overflow-y: auto;
+        height: auto;
+    }
+
+    .admin-topbar {
+        position: relative;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-widgets {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-body .admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-body .painel-agendamentos {
+        flex-direction: column;
+    }
+
+    .admin-body .box-agendamentos {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .topbar-right {
+        gap: 4px;
+    }
+
+    .topbar-btn {
+        padding: 6px 8px;
+        font-size: 0.75rem;
+    }
+
+    .topbar-left h1 {
+        font-size: 1rem;
+    }
+
+    .tab-content {
+        padding: 16px;
+    }
+
+    .quick-actions-grid {
+        flex-direction: column;
+    }
+}
