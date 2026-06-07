@@ -22,6 +22,9 @@ function getLocalData(key, fallback = []) {
 
 function setLocalData(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
+    if ((key === "diasBloqueados" || key === "bloqueiosHorario") && typeof atualizarListaBloqueios === "function") {
+        atualizarListaBloqueios();
+    }
 }
 
 // Gera ID incremental
@@ -1485,8 +1488,23 @@ function salvarEdicaoUsuario() {
     const diaBR = `${partes[2]}/${partes[1]}/${partes[0]}`;
 
     let agendamentos = getLocalData("agendamentos", []);
+    const agendamentoAntigo = agendamentos.find(a => a.id === id);
+    const nome = agendamentoAntigo ? agendamentoAntigo.nome : "Usuário";
+
     agendamentos = agendamentos.map(a => a.id === id ? { ...a, dia: diaBR, horario, email } : a);
     setLocalData("agendamentos", agendamentos);
+
+    // Salvar no histórico de edições
+    const historico = getLocalData("historicoEdicoes", []);
+    const agora = new Date();
+    historico.unshift({
+        usuario: nome,
+        data_edicao: `${String(agora.getDate()).padStart(2, '0')}/${String(agora.getMonth() + 1).padStart(2, '0')}/${agora.getFullYear()}`,
+        horario_edicao: `${String(agora.getHours()).padStart(2, '0')}:${String(agora.getMinutes()).padStart(2, '0')}`,
+        novo_horario: horario,
+        novo_dia: diaBR
+    });
+    setLocalData("historicoEdicoes", historico);
 
     Swal.fire("Sucesso!", "Agendamento atualizado!", "success");
     fecharEdicaoUsuario();
@@ -2351,6 +2369,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if(btnTabHorarios) {
             btnTabHorarios.addEventListener("click", () => {
                 carregarCalendarioAdminHorarios();
+                atualizarListaBloqueios();
             });
         }
         if(btnTabDias) {
@@ -2358,5 +2377,174 @@ document.addEventListener("DOMContentLoaded", () => {
                 carregarCalendarioAdminDias();
             });
         }
+        
+        // Initial render
+        setTimeout(() => atualizarListaBloqueios(), 500);
     }
 });
+
+function atualizarListaBloqueios() {
+    const container = document.getElementById('lista-bloqueios-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    let diasBloqueados = getLocalData("diasBloqueados", []);
+    let bloqueiosHorario = getLocalData("bloqueiosHorario", {});
+    
+    // Gather all unique dates with blocks
+    let datasComBloqueio = new Set([...diasBloqueados]);
+    
+    for (let dataISO in bloqueiosHorario) {
+        if (bloqueiosHorario[dataISO] && bloqueiosHorario[dataISO].length > 0) {
+            let partes = dataISO.split('-');
+            let dataBR = `${partes[2]}/${partes[1]}/${partes[0]}`;
+            datasComBloqueio.add(dataBR);
+        }
+    }
+    
+    if (datasComBloqueio.size === 0) {
+        container.innerHTML = '<div class="lista-vazia">Nenhum bloqueio ativo.</div>';
+        return;
+    }
+    
+    // Convert to array and sort by date string (simple sort, enough for DD/MM/YYYY grouping visual)
+    let datasArray = Array.from(datasComBloqueio);
+    
+    datasArray.forEach((diaBR, index) => {
+        let isDiaInteiro = diasBloqueados.includes(diaBR);
+        
+        // Find ISO format for this day
+        let partes = diaBR.split('/');
+        let dataISO = `${partes[2]}-${partes[1]}-${partes[0]}`;
+        let horarios = bloqueiosHorario[dataISO] || [];
+        
+        let qtdBloqueios = 0;
+        if (isDiaInteiro) qtdBloqueios++;
+        qtdBloqueios += horarios.length;
+        
+        let itemDia = document.createElement('div');
+        itemDia.style.marginBottom = "10px";
+        itemDia.style.border = "1px solid #ddd";
+        itemDia.style.borderRadius = "6px";
+        itemDia.style.backgroundColor = "#f8f9fa";
+        itemDia.style.overflow = "hidden";
+        
+        let headerId = `bloqueios-dia-${index}`;
+        
+        // Header
+        let header = document.createElement('div');
+        header.style.padding = "10px 15px";
+        header.style.cursor = "pointer";
+        header.style.display = "flex";
+        header.style.justifyContent = "space-between";
+        header.style.alignItems = "center";
+        header.innerHTML = `
+            <strong style="color: #333;">${diaBR}</strong>
+            <span style="font-size: 0.85em; color: #666; background: #e9ecef; padding: 2px 8px; border-radius: 12px;">
+                ${qtdBloqueios} bloqueio(s) <i class="fa-solid fa-chevron-down" style="margin-left: 5px;"></i>
+            </span>
+        `;
+        
+        // Content
+        let content = document.createElement('div');
+        content.id = headerId;
+        content.style.display = "none";
+        content.style.padding = "10px 15px";
+        content.style.borderTop = "1px solid #ddd";
+        content.style.backgroundColor = "#fff";
+        
+        // Toggle action
+        header.onclick = function() {
+            if (content.style.display === "none") {
+                content.style.display = "block";
+                header.querySelector('i').classList.replace('fa-chevron-down', 'fa-chevron-up');
+            } else {
+                content.style.display = "none";
+                header.querySelector('i').classList.replace('fa-chevron-up', 'fa-chevron-down');
+            }
+        };
+        
+        // Populate content
+        if (isDiaInteiro) {
+            content.innerHTML += `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #eee;">
+                    <span style="color: #dc3545; font-weight: bold; font-size: 0.9em;">Dia Inteiro</span>
+                    <button onclick="removerBloqueioListaDia('${diaBR}')" style="background-color: #ff4d4d; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.85em;"><i class="fa-solid fa-trash"></i> Desbloq.</button>
+                </div>
+            `;
+        }
+        
+        horarios.forEach(horario => {
+            content.innerHTML += `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #eee;">
+                    <span style="color: #555; font-size: 0.9em;">Horário: <strong>${horario}</strong></span>
+                    <button onclick="removerBloqueioListaHorario('${dataISO}', '${horario}')" style="background-color: #ff4d4d; color: white; border: none; border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.85em;"><i class="fa-solid fa-trash"></i> Desbloq.</button>
+                </div>
+            `;
+        });
+        
+        // Remove last border bottom
+        if (content.lastElementChild) {
+            content.lastElementChild.style.borderBottom = "none";
+            content.lastElementChild.style.marginBottom = "0";
+            content.lastElementChild.style.paddingBottom = "0";
+        }
+        
+        itemDia.appendChild(header);
+        itemDia.appendChild(content);
+        container.appendChild(itemDia);
+    });
+}
+
+function removerBloqueioListaDia(diaBR) {
+    Swal.fire({
+        title: 'Remover Bloqueio',
+        text: `Deseja desbloquear o dia inteiro (${diaBR})?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, desbloquear'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let diasBloqueados = getLocalData("diasBloqueados", []);
+            diasBloqueados = diasBloqueados.filter(d => d !== diaBR);
+            setLocalData("diasBloqueados", diasBloqueados);
+            
+            Swal.fire("Sucesso", "Dia desbloqueado com sucesso.", "success");
+            atualizarListaBloqueios();
+            carregarCalendarioAdminDias();
+            carregarCalendarioAdminHorarios();
+            if(diaSelecionadoAdminHorarios) atualizarHorariosAdmin(diaSelecionadoAdminHorarios);
+        }
+    });
+}
+
+function removerBloqueioListaHorario(dataISO, horario) {
+    Swal.fire({
+        title: 'Remover Bloqueio',
+        text: `Deseja desbloquear o horário ${horario}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, desbloquear'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let bloq = getLocalData("bloqueiosHorario", {});
+            if (bloq[dataISO]) {
+                bloq[dataISO] = bloq[dataISO].filter(h => h !== horario);
+                if (bloq[dataISO].length === 0) {
+                    delete bloq[dataISO];
+                }
+                setLocalData("bloqueiosHorario", bloq);
+            }
+            
+            Swal.fire("Sucesso", "Horário desbloqueado com sucesso.", "success");
+            atualizarListaBloqueios();
+            carregarCalendarioAdminHorarios();
+            if(diaSelecionadoAdminHorarios) atualizarHorariosAdmin(diaSelecionadoAdminHorarios);
+        }
+    });
+}

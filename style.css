@@ -134,6 +134,7 @@ button:hover {
 
 .calendario div.ativo {
     background-color: #1E3A5F;
+    color: white;
     cursor: pointer;
     border-radius: 5px;
     font-weight: bold;
@@ -144,6 +145,7 @@ button:hover {
     /* azul */
     color: white;
 }
+
 
 .selecionado-multiplo {
     background-color: #D4943A !important;
@@ -2344,4 +2346,112 @@ body.admin-body::before {
     .quick-actions-grid {
         flex-direction: column;
     }
+}
+
+/* Footer extraído do index.php */
+.footer-zenith {
+    background: linear-gradient(135deg, rgba(15, 31, 51, 0.85), rgba(21, 44, 74, 0.75));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: white;
+    text-align: center;
+    padding: 18px 24px;
+    margin: 40px auto 0;
+    font-size: 13px;
+    border-top: 2px solid rgba(200, 117, 51, 0.5);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    width: 100%;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.3px;
+}
+
+.footer-zenith p {
+    margin: 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 8px;
+}
+
+.footer-zenith i {
+    color: #C87533; 
+    font-size: 16px;
+}
+
+.footer-empresa {
+    color: #e2e8f0; 
+    font-weight: 500;
+}
+
+.footer-divisor {
+    color: rgba(255,255,255,0.35);
+}
+
+.footer-direitos {
+    color: #94a3b8;
+}
+
+/* Painel Duplo para Gerenciamento de Horários */
+.painel-duplo {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .painel-duplo {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.item-bloqueio {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-bloqueio .info-bloqueio {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-bloqueio .data-bloqueio {
+    font-weight: bold;
+    color: #333;
+}
+
+.item-bloqueio .tipo-bloqueio {
+    font-size: 0.85em;
+    color: #dc3545;
+}
+
+.item-bloqueio button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+.item-bloqueio button:hover {
+    background-color: #cc0000;
+}
+
+.lista-vazia {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    padding: 20px;
 }

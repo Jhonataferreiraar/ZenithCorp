@@ -182,33 +182,45 @@
 
         <!-- TAB: Gerenciamento de Horários -->
         <section id="sec-gerenciar-horarios" class="tab-content">
-            <div class="container2" style="margin: 0 auto; max-width: 400px;">
-                <h2 class="section-subtitle"><i class="fa-solid fa-stopwatch"></i> Gerenciamento de Horários</h2>
-                <p>Selecione um dia no calendário e clique no horário para bloqueá-lo ou desbloqueá-lo.</p>
+            <div class="painel-duplo">
+                <!-- Painel Esquerdo: Calendário -->
+                <div class="container2 painel-esquerdo" style="max-width: 400px; flex: 1;">
+                    <h2 class="section-subtitle"><i class="fa-solid fa-stopwatch"></i> Gerenciamento de Horários</h2>
+                    <p>Selecione um dia no calendário e clique no horário para bloqueá-lo ou desbloqueá-lo.</p>
 
-                <div id="calendario-container">
-                    <h3 id="mes-atual-admin-horarios" style="color: #000000;"></h3>
-                    <div class="dias-semana">
-                        <div>Dom</div>
-                        <div>Seg</div>
-                        <div>Ter</div>
-                        <div>Qua</div>
-                        <div>Qui</div>
-                        <div>Sex</div>
-                        <div>Sáb</div>
+                    <div id="calendario-container">
+                        <h3 id="mes-atual-admin-horarios" style="color: #000000;"></h3>
+                        <div class="dias-semana">
+                            <div>Dom</div>
+                            <div>Seg</div>
+                            <div>Ter</div>
+                            <div>Qua</div>
+                            <div>Qui</div>
+                            <div>Sex</div>
+                            <div>Sáb</div>
+                        </div>
+                        <div id="calendario-admin-horarios" class="calendario"></div>
                     </div>
-                    <div id="calendario-admin-horarios" class="calendario"></div>
+
+                    <p></p>
+                    <div id="grade-horarios-admin" class="grade-horarios" style="margin-top: 20px;"></div>
+                    
+                    <div id="acoes-horarios-container" style="display: none; margin-top: 20px; text-align: center;">
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+                            <button onclick="bloquearHorariosSelecionados()" style="background-color: #dc3545; padding: 10px 20px;">Bloquear Selecionados</button>
+                            <button onclick="desbloquearHorariosSelecionados()" style="background-color: #28a745; padding: 10px 20px;">Desbloquear Selecionados</button>
+                        </div>
+                        <button id="btn-bloquear-todos-horarios" onclick="bloquearTodosHorariosDia()" style="background-color: #8b0000; padding: 10px 20px; width: 100%; color: white; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease;">Bloquear Todos os Horários</button>
+                    </div>
                 </div>
 
-                <p></p>
-                <div id="grade-horarios-admin" class="grade-horarios" style="margin-top: 20px;"></div>
-                
-                <div id="acoes-horarios-container" style="display: none; margin-top: 20px; text-align: center;">
-                    <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
-                        <button onclick="bloquearHorariosSelecionados()" style="background-color: #dc3545; padding: 10px 20px;">Bloquear Selecionados</button>
-                        <button onclick="desbloquearHorariosSelecionados()" style="background-color: #28a745; padding: 10px 20px;">Desbloquear Selecionados</button>
+                <!-- Painel Direito: Lista de Bloqueios -->
+                <div class="container2 painel-direito" style="max-width: 400px; flex: 1; display: flex; flex-direction: column;">
+                    <h2 class="section-subtitle"><i class="fa-solid fa-ban"></i> Bloqueios Atuais</h2>
+                    <p>Dias inteiros e horários específicos que estão bloqueados no momento.</p>
+                    <div id="lista-bloqueios-container" style="overflow-y: auto; flex-grow: 1; max-height: 500px; padding-right: 10px;">
+                        <!-- Lista será gerada via JS -->
                     </div>
-                    <button id="btn-bloquear-todos-horarios" onclick="bloquearTodosHorariosDia()" style="background-color: #8b0000; padding: 10px 20px; width: 100%; color: white; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease;">Bloquear Todos os Horários</button>
                 </div>
             </div>
         </section>
