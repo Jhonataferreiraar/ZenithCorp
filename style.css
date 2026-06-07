@@ -145,6 +145,20 @@ button:hover {
     color: white;
 }
 
+.selecionado-multiplo {
+    background-color: #D4943A !important;
+    color: white !important;
+    border: 2px solid #1E3A5F !important;
+    transform: scale(1.05);
+}
+
+.calendario div.selecionado {
+    background-color: #D4943A !important;
+    color: white !important;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
 .calendario div.ativo:hover {
     background-color: #C87533;
 }

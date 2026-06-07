@@ -28,8 +28,11 @@
             <button onclick="switchTab('agendamentos')" class="menu-item" id="btn-tab-agendamentos">
                 <span class="menu-icon"><i class="fa-regular fa-calendar-check"></i></span> <span class="menu-text">Agendamentos</span>
             </button>
-            <button onclick="switchTab('bloqueios')" class="menu-item" id="btn-tab-bloqueios">
-                <span class="menu-icon"><i class="fa-solid fa-sliders"></i></span> <span class="menu-text">Bloqueios & Dias</span>
+            <button onclick="switchTab('gerenciar-horarios')" class="menu-item" id="btn-tab-gerenciar-horarios">
+                <span class="menu-icon"><i class="fa-regular fa-clock"></i></span> <span class="menu-text">Gerenciar Horários</span>
+            </button>
+            <button onclick="switchTab('gerenciar-dias')" class="menu-item" id="btn-tab-gerenciar-dias">
+                <span class="menu-icon"><i class="fa-solid fa-calendar-day"></i></span> <span class="menu-text">Gerenciar Dias</span>
             </button>
             <button onclick="switchTab('liberacao')" class="menu-item" id="btn-tab-liberacao">
                 <span class="menu-icon"><i class="fa-solid fa-lock-open"></i></span> <span class="menu-text">Liberar Mês</span>
@@ -104,7 +107,7 @@
                     <h3>Ações Rápidas</h3>
                     <div class="quick-actions-grid">
                         <button onclick="switchTab('agendamentos')" class="quick-btn"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar Usuário</button>
-                        <button onclick="switchTab('bloqueios')" class="quick-btn"><i class="fa-solid fa-ban"></i> Bloquear Data</button>
+                        <button onclick="switchTab('gerenciar-horarios')" class="quick-btn"><i class="fa-solid fa-ban"></i> Bloquear Data</button>
                         <button onclick="switchTab('relatorios')" class="quick-btn"><i class="fa-solid fa-file-export"></i> Exportar Mês Atual</button>
                     </div>
                 </div>
@@ -132,8 +135,26 @@
                         </div>
                     </div>
 
-                    <input type="text" id="pesquisaAtivos" placeholder="Pesquisar por nome..."
-                        onkeyup="filtrarAgendamentosAtivos()" class="campo-pesquisa">
+                    <div class="controles-lista-agendamentos" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <input type="text" id="pesquisaAtivos" placeholder="Pesquisar por nome..."
+                            onkeyup="filtrarAgendamentosAtivos()" class="campo-pesquisa" style="margin-bottom: 0; flex: 1; min-width: 200px;">
+                        
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+                            <div class="paginacao-seletor" style="display: flex; align-items: center; gap: 5px;">
+                                <label for="itensPorPagina" style="font-weight: bold; margin: 0;">Itens por página:</label>
+                                <select id="itensPorPagina" onchange="mudarItensPorPagina()" style="padding: 5px; border-radius: 5px; border: 1px solid #ccc;">
+                                    <option value="3">3</option>
+                                    <option value="6">6</option>
+                                    <option value="9">9</option>
+                                    <option value="todos">Todos</option>
+                                </select>
+                            </div>
+                            <div id="paginacao-numeros" class="paginacao-numeros" style="display: flex; justify-content: center; gap: 5px;">
+                                <!-- Botões de página aparecerão aqui -->
+                            </div>
+                        </div>
+                    </div>
+
                     <div id="lista-agendamentos">
                         <!-- Agendamentos ativos aparecerão aqui -->
                     </div>
@@ -159,119 +180,66 @@
             </div>
         </section>
 
-        <!-- TAB: Bloqueios & Dias -->
-        <section id="sec-bloqueios" class="tab-content">
-            <h2 class="section-subtitle"><i class="fa-solid fa-stopwatch"></i> Gerenciamento de Horários</h2>
-            <div class="admin-grid">
-                <!-- Card: Bloquear Horário Específico -->
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        <span class="admin-card-icon"><i class="fa-solid fa-ban"></i></span>
-                        <h3>Bloquear Horário Específico</h3>
-                    </div>
-                    <div class="admin-card-body">
-                        <div class="container-bloqueio">
-                            <label for="dataBloqueio">Data de Bloqueio:</label>
-                            <input type="date" id="dataBloqueio">
+        <!-- TAB: Gerenciamento de Horários -->
+        <section id="sec-gerenciar-horarios" class="tab-content">
+            <div class="container2" style="margin: 0 auto; max-width: 400px;">
+                <h2 class="section-subtitle"><i class="fa-solid fa-stopwatch"></i> Gerenciamento de Horários</h2>
+                <p>Selecione um dia no calendário e clique no horário para bloqueá-lo ou desbloqueá-lo.</p>
 
-                            <div class="admin-btn-row">
-                                <button onclick="abrirPopupHorarios()">Selecionar Horários</button>
-                                <span id="quantidadeSelecionada" style="font-weight: bold; color: #152C4A;"></span>
-                            </div>
-                            <button onclick="confirmarBloqueioHorarios()" class="admin-btn-danger" style="width: 100%;">Bloquear Horários Selecionados</button>
-
-                            <!-- Popup dos horários -->
-                            <div id="popupHorarios" class="popup-overlay" style="display: none;">
-                                <div class="popup-conteudo">
-                                    <h3>Selecione os horários</h3>
-                                    <div class="botoes-horarios" id="botoesHorariosPopup">
-                                        <!-- Botões serão adicionados via JS -->
-                                    </div>
-                                    <br>
-                                    <button onclick="fecharPopupHorarios()">Confirmar</button>
-                                </div>
-                            </div>
-                        </div>
+                <div id="calendario-container">
+                    <h3 id="mes-atual-admin-horarios" style="color: #000000;"></h3>
+                    <div class="dias-semana">
+                        <div>Dom</div>
+                        <div>Seg</div>
+                        <div>Ter</div>
+                        <div>Qua</div>
+                        <div>Qui</div>
+                        <div>Sex</div>
+                        <div>Sáb</div>
                     </div>
+                    <div id="calendario-admin-horarios" class="calendario"></div>
                 </div>
 
-                <!-- Card: Desbloquear Horário Específico -->
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        <span class="admin-card-icon"><i class="fa-solid fa-lock-open"></i></span>
-                        <h3>Desbloquear Horário Específico</h3>
+                <p></p>
+                <div id="grade-horarios-admin" class="grade-horarios" style="margin-top: 20px;"></div>
+                
+                <div id="acoes-horarios-container" style="display: none; margin-top: 20px; text-align: center;">
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+                        <button onclick="bloquearHorariosSelecionados()" style="background-color: #dc3545; padding: 10px 20px;">Bloquear Selecionados</button>
+                        <button onclick="desbloquearHorariosSelecionados()" style="background-color: #28a745; padding: 10px 20px;">Desbloquear Selecionados</button>
                     </div>
-                    <div class="admin-card-body">
-                        <p class="card-description">Escolha uma data para visualizar e reativar os horários de massagem bloqueados.</p>
-                        <button onclick="document.getElementById('popupDesbloque').style.display='flex'" style="width: 100%; margin-top: 15px;">
-                            Buscar &amp; Desbloquear
-                        </button>
-
-                        <div id="popupDesbloque" class="popup">
-                            <div class="popup-content">
-                                <h2>Desbloquear Horários</h2>
-                                <input type="date" id="dataDesbloqueio" />
-                                <button onclick="carregarHorariosBloqueados()">Buscar</button>
-                                <div id="horariosBloqueadosLista"></div>
-                                <button class="fechar-btn"
-                                    onclick="document.getElementById('popupDesbloque').style.display='none'">Fechar</button>
-                            </div>
-                        </div>
-                    </div>
+                    <button id="btn-bloquear-todos-horarios" onclick="bloquearTodosHorariosDia()" style="background-color: #8b0000; padding: 10px 20px; width: 100%; color: white; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease;">Bloquear Todos os Horários</button>
                 </div>
             </div>
+        </section>
 
-            <h2 class="section-subtitle" style="margin-top: 40px;"><i class="fa-regular fa-calendar-days"></i> Gerenciamento de Dias</h2>
-            <div class="admin-grid">
-                <!-- Card: Liberar Dia Específico -->
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        <span class="admin-card-icon"><i class="fa-solid fa-calendar-plus"></i></span>
-                        <h3>Liberar Dia Específico</h3>
+        <!-- TAB: Gerenciamento de Dias -->
+        <section id="sec-gerenciar-dias" class="tab-content">
+            <div class="container2" style="margin: 0 auto; max-width: 400px;">
+                <h2 class="section-subtitle"><i class="fa-regular fa-calendar-days"></i> Gerenciamento de Dias</h2>
+                <p>Selecione um dia no calendário para gerenciar liberações e bloqueios de dias inteiros.</p>
+
+                <div id="calendario-container">
+                    <h3 id="mes-atual-admin-dias" style="color: #000000;"></h3>
+                    <div class="dias-semana">
+                        <div>Dom</div>
+                        <div>Seg</div>
+                        <div>Ter</div>
+                        <div>Qua</div>
+                        <div>Qui</div>
+                        <div>Sex</div>
+                        <div>Sáb</div>
                     </div>
-                    <div class="admin-card-body">
-                        <label for="diaExtra">Data para Liberar:</label>
-                        <input type="date" id="diaExtra">
-                        <button onclick="liberarDiaExtra()" style="width: 100%;">Liberar Dia</button>
-                    </div>
+                    <div id="calendario-admin-dias" class="calendario"></div>
                 </div>
-
-                <!-- Card: Remover Dia Liberado -->
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        <span class="admin-card-icon"><i class="fa-solid fa-circle-xmark"></i></span>
-                        <h3>Remover Dia Liberado</h3>
-                    </div>
-                    <div class="admin-card-body">
-                        <label for="diaRemover">Data para Remover:</label>
-                        <input type="date" id="diaRemover">
-                        <button onclick="removerDiaExtra()" class="admin-btn-danger" style="width: 100%;">Remover Dia</button>
-                    </div>
-                </div>
-
-                <!-- Card: Bloquear Dia -->
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        <span class="admin-card-icon"><i class="fa-solid fa-calendar-xmark"></i></span>
-                        <h3>Bloquear Dia Inteiro</h3>
-                    </div>
-                    <div class="admin-card-body">
-                        <label for="diaBloquear">Data para Bloquear:</label>
-                        <input type="date" id="diaBloquear">
-                        <button onclick="bloquearDia()" class="admin-btn-danger" style="width: 100%;">Bloquear Dia</button>
-                    </div>
-                </div>
-
-                <!-- Card: Desbloquear Dia -->
-                <div class="admin-card">
-                    <div class="admin-card-header">
-                        <span class="admin-card-icon"><i class="fa-solid fa-arrows-rotate"></i></span>
-                        <h3>Desbloquear Dia Inteiro</h3>
-                    </div>
-                    <div class="admin-card-body">
-                        <label for="diaDesbloquear">Data para Desbloquear:</label>
-                        <input type="date" id="diaDesbloquear">
-                        <button onclick="desbloquearDia()" style="width: 100%;">Desbloquear Dia</button>
+                
+                <div id="acoes-dias-admin" style="display: none; margin-top: 20px; text-align: center;">
+                    <h3 id="textoAcaoDias" style="margin-bottom: 20px; color: #1E3A5F; border-bottom: 2px solid #ccc; padding-bottom: 10px;"></h3>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <button onclick="acaoDiaLib()" style="background-color: #28a745; width: 100%; padding: 15px; font-size: 16px;">Liberar Dia</button>
+                        <button onclick="acaoDiaRemLib()" style="background-color: #ffc107; color: black; width: 100%; padding: 15px; font-size: 16px;">Remover Liberado</button>
+                        <button onclick="acaoDiaBloq()" style="background-color: #dc3545; width: 100%; padding: 15px; font-size: 16px;">Bloquear Inteiro</button>
+                        <button onclick="acaoDiaDesbloq()" style="background-color: #17a2b8; width: 100%; padding: 15px; font-size: 16px;">Desbloquear Inteiro</button>
                     </div>
                 </div>
             </div>
@@ -444,6 +412,18 @@
     </div>
 </div>
 
+<!-- Popup de Ação em Horário -->
+<div id="popupAcaoHorario" class="popup-overlay" style="display: none;">
+    <div class="popup-box">
+        <h3 id="tituloAcaoHorario">Gerenciar Horário</h3>
+        <p id="textoAcaoHorario"></p>
+        <button id="btnBloquearDesbloquearHorario">Confirmar</button>
+        <button onclick="document.getElementById('popupAcaoHorario').style.display='none'">Cancelar</button>
+    </div>
+</div>
+
+
+
 <!-- Script do Dashboard e Alternador de Abas -->
 <script>
     function switchTab(tabId) {
@@ -462,7 +442,8 @@
         const titles = {
             'dashboard': 'Visão Geral',
             'agendamentos': 'Lista de Agendamentos',
-            'bloqueios': 'Bloqueios & Configurações de Dias',
+            'gerenciar-horarios': 'Gerenciamento de Horários',
+            'gerenciar-dias': 'Gerenciamento de Dias',
             'liberacao': 'Liberação de Mês',
             'relatorios': 'Gerar Relatórios'
         };

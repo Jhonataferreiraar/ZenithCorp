@@ -449,6 +449,88 @@ function fecharPopup() {
     document.getElementById("popupConfirmacao").style.display = "none";
 }
 
+let paginaAtualAgendamentos = 1;
+let itensPorPaginaAgendamentos = 3;
+
+function mudarItensPorPagina() {
+    const select = document.getElementById("itensPorPagina");
+    if(select) {
+        if(select.value === "todos") {
+            itensPorPaginaAgendamentos = "todos";
+        } else {
+            itensPorPaginaAgendamentos = parseInt(select.value, 10);
+        }
+        paginaAtualAgendamentos = 1;
+        carregarAgendamentos();
+    }
+}
+
+function renderizarPaginacaoAgendamentos(totalItens) {
+    const container = document.getElementById("paginacao-numeros");
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (itensPorPaginaAgendamentos === "todos") return;
+
+    const totalPaginas = Math.ceil(totalItens / itensPorPaginaAgendamentos);
+    if (totalPaginas <= 1) return;
+
+    // Lógica para mostrar apenas 5 botões (sliding window)
+    let startPage = Math.max(1, paginaAtualAgendamentos - 2);
+    let endPage = Math.min(totalPaginas, startPage + 4);
+
+    if (endPage - startPage < 4) {
+        startPage = Math.max(1, endPage - 4);
+    }
+
+    // Botão Anterior (<)
+    if (paginaAtualAgendamentos > 1) {
+        const btnPrev = document.createElement("button");
+        btnPrev.innerText = "<";
+        estilizarBotaoPaginacao(btnPrev, false);
+        btnPrev.onclick = () => {
+            paginaAtualAgendamentos--;
+            carregarAgendamentos();
+        };
+        container.appendChild(btnPrev);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement("button");
+        btn.innerText = i;
+        const isAtivo = (i === paginaAtualAgendamentos);
+        estilizarBotaoPaginacao(btn, isAtivo);
+        
+        btn.onclick = () => {
+            paginaAtualAgendamentos = i;
+            carregarAgendamentos();
+        };
+        container.appendChild(btn);
+    }
+
+    // Botão Próximo (>)
+    if (paginaAtualAgendamentos < totalPaginas) {
+        const btnNext = document.createElement("button");
+        btnNext.innerText = ">";
+        estilizarBotaoPaginacao(btnNext, false);
+        btnNext.onclick = () => {
+            paginaAtualAgendamentos++;
+            carregarAgendamentos();
+        };
+        container.appendChild(btnNext);
+    }
+}
+
+function estilizarBotaoPaginacao(btn, isAtivo) {
+    btn.style.padding = "5px 10px";
+    btn.style.margin = "0 2px";
+    btn.style.border = "1px solid #ccc";
+    btn.style.borderRadius = "5px";
+    btn.style.cursor = "pointer";
+    btn.style.backgroundColor = isAtivo ? "#1E3A5F" : "#fff";
+    btn.style.color = isAtivo ? "#fff" : "#333";
+}
+
 function carregarAgendamentos() {
     let listaAtivos = document.getElementById("lista-agendamentos");
     let listaCancelados = document.getElementById("lista-cancelados");
@@ -467,7 +549,28 @@ function carregarAgendamentos() {
             return dataA - dataB;
         });
 
-    agendamentos.forEach((agendamento) => {
+    const agendamentosCancelados = agendamentos.filter(a => a.cancelado == 1);
+    let agendamentosAtivos = agendamentos.filter(a => a.cancelado == 0);
+
+    const termo = document.getElementById("pesquisaAtivos")?.value.toLowerCase() || "";
+    if (termo) {
+        agendamentosAtivos = agendamentosAtivos.filter(a => a.nome.toLowerCase().includes(termo));
+    }
+
+    const totalItens = agendamentosAtivos.length;
+    let agendamentosPaginados;
+
+    if (itensPorPaginaAgendamentos === "todos") {
+        agendamentosPaginados = agendamentosAtivos;
+    } else {
+        const startIndex = (paginaAtualAgendamentos - 1) * itensPorPaginaAgendamentos;
+        const endIndex = startIndex + itensPorPaginaAgendamentos;
+        agendamentosPaginados = agendamentosAtivos.slice(startIndex, endIndex);
+    }
+
+    renderizarPaginacaoAgendamentos(totalItens);
+
+    agendamentosPaginados.forEach((agendamento) => {
         let item = document.createElement("div");
         item.classList.add("agendamento-item");
         item.setAttribute("data-id", agendamento.id);
@@ -478,21 +581,33 @@ function carregarAgendamentos() {
             <p><strong>Data:</strong> ${agendamento.dia}</p>
             <p><strong>Horário:</strong> ${agendamento.horario}</p>
         `;
-
-        if (agendamento.cancelado == 1) {
-            item.innerHTML += `
-                <button onclick="reativarAgendamento(${agendamento.id})">Reativar Agendamento</button>
-            `;
-            listaCancelados.appendChild(item);
-        } else {
-            item.innerHTML += `
-                <button onclick="abrirEdicao(${agendamento.id}, '${agendamento.nome}', '${agendamento.email}', '${agendamento.dia}', '${agendamento.horario}')">Editar</button>
-                <button onclick="confirmarCancelarAgendamento(${agendamento.id})">Cancelar</button>
-                <button onclick="excluirAgendamento(this)">Excluir</button>
-            `;
-            listaAtivos.appendChild(item);
-        }
+        item.innerHTML += `
+            <button onclick="abrirEdicao(${agendamento.id}, '${agendamento.nome}', '${agendamento.email}', '${agendamento.dia}', '${agendamento.horario}')">Editar</button>
+            <button onclick="confirmarCancelarAgendamento(${agendamento.id})">Cancelar</button>
+            <button onclick="excluirAgendamento(this)">Excluir</button>
+        `;
+        listaAtivos.appendChild(item);
     });
+
+    agendamentosCancelados.forEach((agendamento) => {
+        let item = document.createElement("div");
+        item.classList.add("agendamento-item");
+        item.setAttribute("data-id", agendamento.id);
+
+        item.innerHTML = `
+            <p><strong>Nome:</strong> ${agendamento.nome}</p>
+            <p><strong>Email:</strong> ${agendamento.email}</p>
+            <p><strong>Data:</strong> ${agendamento.dia}</p>
+            <p><strong>Horário:</strong> ${agendamento.horario}</p>
+        `;
+        item.innerHTML += `
+            <button onclick="reativarAgendamento(${agendamento.id})">Reativar Agendamento</button>
+        `;
+        listaCancelados.appendChild(item);
+    });
+    
+    // Reaplica filtro visual nos cancelados se houver algo digitado
+    filtrarAgendamentosCancelados();
 }
 
 function cancelarAgendamento(id) {
@@ -1233,17 +1348,8 @@ function ocultarAgendamento(id) {
 }
 
 function filtrarAgendamentosAtivos() {
-    const termo = document.getElementById("pesquisaAtivos").value.toLowerCase();
-    const agendamentos = document.querySelectorAll("#lista-agendamentos .agendamento-item");
-
-    agendamentos.forEach(item => {
-        const nome = item.querySelector("p:nth-child(1)")?.innerText?.toLowerCase() || "";
-        if (nome.includes(termo)) {
-            item.style.display = "block";
-        } else {
-            item.style.display = "none";
-        }
-    });
+    paginaAtualAgendamentos = 1;
+    carregarAgendamentos();
 }
 
 function filtrarAgendamentosCancelados() {
@@ -1814,91 +1920,443 @@ console.log("Funções disponíveis:", {
     gerarRelatorioDia: typeof gerarRelatorioDia
 });
 
-async function liberarDiaExtra() {
-    const data = document.getElementById("diaExtra").value;
+let diaSelecionadoAdminDias = null;
+let diaSelecionadoAdminHorarios = null;
+let horarioSelecionadoAcao = null;
 
-    if (!data) {
-        alert("Selecione uma data!");
-        return;
-    }
+async function acaoDiaLib() {
+    if (!diaSelecionadoAdminDias) { Swal.fire("Atenção", "Nenhum dia selecionado.", "warning"); return; }
+    
+    const confirm = await Swal.fire({
+        title: 'Confirmar Liberação',
+        text: `Deseja realmente liberar o dia ${diaSelecionadoAdminDias}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, liberar!',
+        cancelButtonText: 'Cancelar'
+    });
+    if (!confirm.isConfirmed) return;
 
-    // Converte para dd/mm/yyyy
-    const dataFormatada = formatarDataParaBR(data);
     let diasExtras = getLocalData("diasExtras", []);
-
-    if (diasExtras.includes(dataFormatada)) {
+    if (diasExtras.includes(diaSelecionadoAdminDias)) {
         Swal.fire({ icon: "info", title: "Info", text: "Este dia já está liberado." });
         return;
     }
-
-    diasExtras.push(dataFormatada);
+    diasExtras.push(diaSelecionadoAdminDias);
     setLocalData("diasExtras", diasExtras);
-
-    Swal.fire({ icon: "success", title: "Dia liberado!", text: `Dia ${dataFormatada} foi liberado com sucesso.` });
+    Swal.fire({ icon: "success", title: "Dia liberado!", text: `Dia ${diaSelecionadoAdminDias} foi liberado com sucesso.` });
+    document.getElementById('acoes-dias-admin').style.display = 'none';
+    carregarCalendarioAdminDias();
+    carregarCalendarioAdminHorarios();
 }
 
-async function removerDiaExtra() {
-    const data = document.getElementById("diaRemover").value;
+async function acaoDiaRemLib() {
+    if (!diaSelecionadoAdminDias) { Swal.fire("Atenção", "Nenhum dia selecionado.", "warning"); return; }
+    
+    const confirm = await Swal.fire({
+        title: 'Remover Liberação?',
+        text: `Deseja realmente remover a liberação do dia ${diaSelecionadoAdminDias}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ffc107',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, remover',
+        cancelButtonText: 'Cancelar'
+    });
+    if (!confirm.isConfirmed) return;
 
-    if (!data) {
-        alert("Selecione uma data!");
-        return;
-    }
-
-    const dataFormatada = formatarDataParaBR(data);
     let diasExtras = getLocalData("diasExtras", []);
-
-    if (!diasExtras.includes(dataFormatada)) {
+    if (!diasExtras.includes(diaSelecionadoAdminDias)) {
         Swal.fire({ icon: "info", title: "Info", text: "Este dia não está na lista de dias extras." });
         return;
     }
-
-    diasExtras = diasExtras.filter(d => d !== dataFormatada);
+    diasExtras = diasExtras.filter(d => d !== diaSelecionadoAdminDias);
     setLocalData("diasExtras", diasExtras);
-
-    Swal.fire({ icon: "success", title: "Dia removido!", text: `Dia ${dataFormatada} foi removido com sucesso.` });
+    Swal.fire({ icon: "success", title: "Dia removido!", text: `A liberação do dia ${diaSelecionadoAdminDias} foi removida.` });
+    document.getElementById('acoes-dias-admin').style.display = 'none';
+    carregarCalendarioAdminDias();
+    carregarCalendarioAdminHorarios();
 }
 
-async function bloquearDia() {
-    const data = document.getElementById("diaBloquear").value;
+async function acaoDiaBloq() {
+    if (!diaSelecionadoAdminDias) { Swal.fire("Atenção", "Nenhum dia selecionado.", "warning"); return; }
+    
+    const confirm = await Swal.fire({
+        title: 'Bloquear Dia?',
+        text: `Deseja bloquear inteiramente o dia ${diaSelecionadoAdminDias}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, bloquear',
+        cancelButtonText: 'Cancelar'
+    });
+    if (!confirm.isConfirmed) return;
 
-    if (!data) {
-        Swal.fire({ icon: "error", title: "Erro", text: "Selecione uma data!" });
-        return;
-    }
-
-    const dataFormatada = formatarDataParaBR(data);
     let diasBloqueados = getLocalData("diasBloqueados", []);
-
-    if (diasBloqueados.includes(dataFormatada)) {
+    if (diasBloqueados.includes(diaSelecionadoAdminDias)) {
         Swal.fire({ icon: "info", title: "Info", text: "Este dia já está bloqueado." });
         return;
     }
-
-    diasBloqueados.push(dataFormatada);
+    diasBloqueados.push(diaSelecionadoAdminDias);
     setLocalData("diasBloqueados", diasBloqueados);
-
-    Swal.fire({ icon: "success", title: "Dia bloqueado!", text: `Dia ${dataFormatada} foi bloqueado com sucesso.` });
+    Swal.fire({ icon: "success", title: "Dia bloqueado!", text: `Dia ${diaSelecionadoAdminDias} bloqueado.` });
+    document.getElementById('acoes-dias-admin').style.display = 'none';
+    carregarCalendarioAdminDias();
+    carregarCalendarioAdminHorarios();
 }
 
-async function desbloquearDia() {
-    const data = document.getElementById("diaDesbloquear").value;
+async function acaoDiaDesbloq() {
+    if (!diaSelecionadoAdminDias) { Swal.fire("Atenção", "Nenhum dia selecionado.", "warning"); return; }
+    
+    const confirm = await Swal.fire({
+        title: 'Desbloquear Dia?',
+        text: `Deseja desbloquear o dia ${diaSelecionadoAdminDias}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#17a2b8',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, desbloquear',
+        cancelButtonText: 'Cancelar'
+    });
+    if (!confirm.isConfirmed) return;
 
-    if (!data) {
-        Swal.fire({ icon: "error", title: "Erro", text: "Selecione uma data!" });
-        return;
-    }
-
-    const dataFormatada = formatarDataParaBR(data);
     let diasBloqueados = getLocalData("diasBloqueados", []);
-
-    if (!diasBloqueados.includes(dataFormatada)) {
+    if (!diasBloqueados.includes(diaSelecionadoAdminDias)) {
         Swal.fire({ icon: "info", title: "Info", text: "Este dia não está bloqueado." });
         return;
     }
-
-    diasBloqueados = diasBloqueados.filter(d => d !== dataFormatada);
+    diasBloqueados = diasBloqueados.filter(d => d !== diaSelecionadoAdminDias);
     setLocalData("diasBloqueados", diasBloqueados);
-
-    Swal.fire({ icon: "success", title: "Dia desbloqueado!", text: `Dia ${dataFormatada} foi desbloqueado com sucesso.` });
+    Swal.fire({ icon: "success", title: "Dia desbloqueado!", text: `Dia ${diaSelecionadoAdminDias} desbloqueado.` });
+    document.getElementById('acoes-dias-admin').style.display = 'none';
+    carregarCalendarioAdminDias();
+    carregarCalendarioAdminHorarios();
 }
+
+function carregarCalendarioAdmin(idContainer, tituloElementId, apenasAtivos, callbackClique) {
+    const calendario = document.getElementById(idContainer);
+    const mesAtual = document.getElementById(tituloElementId);
+    if(!calendario || !mesAtual) return;
+
+    let dadosMes = getLocalData("mesLiberado", null);
+    let mesLiberado, anoLiberado;
+    if (dadosMes) {
+        mesLiberado = dadosMes.mes - 1;
+        anoLiberado = dadosMes.ano;
+    } else {
+        let dataAtual = new Date();
+        mesLiberado = dataAtual.getMonth();
+        anoLiberado = dataAtual.getFullYear();
+    }
+
+    const meses = [
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+    mesAtual.innerText = `${meses[mesLiberado]} ${anoLiberado}`;
+    calendario.innerHTML = "";
+
+    let feriadosSet = new Set([
+        "01/01/2026", "20/02/2026", "21/02/2026", "03/04/2026", "21/04/2026",
+        "01/05/2026", "04/06/2026", "07/09/2026", "12/10/2026", "02/11/2026",
+        "15/11/2026", "25/12/2026"
+    ]);
+
+    let diasExtrasSet = new Set(getLocalData("diasExtras", []));
+    let diasBloqueadosSet = new Set(getLocalData("diasBloqueados", []));
+
+    let primeiroDia = new Date(anoLiberado, mesLiberado, 1).getDay();
+    let totalDias = new Date(anoLiberado, mesLiberado + 1, 0).getDate();
+
+    for (let i = 0; i < primeiroDia; i++) {
+        calendario.appendChild(document.createElement("div"));
+    }
+
+    const hoje = new Date();
+
+    for (let dia = 1; dia <= totalDias; dia++) {
+        let data = new Date(anoLiberado, mesLiberado, dia);
+        let diaSemana = data.getDay();
+        let dataFormatada = `${String(dia).padStart(2, '0')}/${String(mesLiberado + 1).padStart(2, '0')}/${anoLiberado}`;
+
+        let diaElemento = document.createElement("div");
+        diaElemento.textContent = dia;
+
+        const isFeriado = feriadosSet.has(dataFormatada);
+
+        if (
+            data.getFullYear() === hoje.getFullYear() &&
+            data.getMonth() === hoje.getMonth() &&
+            dia === hoje.getDate()
+        ) {
+            diaElemento.classList.add("hoje");
+        } else if (isFeriado) {
+            diaElemento.classList.add("feriado");
+        }
+        
+        let podeClicar = false;
+        let isPassadoOuHoje = data <= new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+        
+        if (isPassadoOuHoje) {
+            diaElemento.classList.add("desativado");
+        } else if (!diasBloqueadosSet.has(dataFormatada) && ((diaSemana === 3 || diaSemana === 5) || diasExtrasSet.has(dataFormatada))) {
+            diaElemento.classList.add("ativo");
+            podeClicar = true;
+        } else if (!apenasAtivos) {
+            diaElemento.style.cursor = 'pointer';
+            podeClicar = true;
+        } else {
+            diaElemento.classList.add("desativado");
+        }
+
+        if(podeClicar) {
+            diaElemento.onclick = function () {
+                document.querySelectorAll(`#${idContainer} div`).forEach(el => el.classList.remove("selecionado"));
+                diaElemento.classList.add("selecionado");
+                callbackClique(dataFormatada);
+            };
+        }
+
+        calendario.appendChild(diaElemento);
+    }
+}
+
+function carregarCalendarioAdminHorarios() {
+    carregarCalendarioAdmin("calendario-admin-horarios", "mes-atual-admin-horarios", true, (dataFormatada) => {
+        diaSelecionadoAdminHorarios = dataFormatada;
+        atualizarHorariosAdmin(dataFormatada);
+    });
+}
+
+function carregarCalendarioAdminDias() {
+    carregarCalendarioAdmin("calendario-admin-dias", "mes-atual-admin-dias", false, (dataFormatada) => {
+        diaSelecionadoAdminDias = dataFormatada;
+        const textoAcaoDias = document.getElementById("textoAcaoDias");
+        if(textoAcaoDias) textoAcaoDias.innerText = `Gerenciando dia: ${dataFormatada}`;
+        document.getElementById('acoes-dias-admin').style.display = 'block';
+    });
+}
+
+function formatarDataISO(dataBR) {
+    const partes = dataBR.split("/");
+    return `${partes[2]}-${partes[1]}-${partes[0]}`;
+}
+
+let horariosSelecionadosAdmin = [];
+
+async function atualizarHorariosAdmin(diaSelecionado) {
+    const grade = document.getElementById("grade-horarios-admin");
+    if (!grade) return;
+    grade.innerHTML = "";
+    horariosSelecionadosAdmin = []; // resetar seleção
+    const divAcoesHorarios = document.getElementById("acoes-horarios-container");
+    if(divAcoesHorarios) divAcoesHorarios.style.display = "block";
+    
+    let diasBloqueados = getLocalData("diasBloqueados", []);
+    if(diasBloqueados.includes(diaSelecionado)) {
+        grade.innerHTML = "<p style='color:red;'>Este dia está bloqueado por inteiro.</p>";
+        return;
+    }
+
+    const horariosFixos = [
+        "09:00", "09:20", "09:40", "10:00", "10:20", "10:40",
+        "11:00", "11:20", "11:40", "12:00", "13:20",
+        "13:40", "14:00", "14:20", "14:40", "15:00", "15:20",
+        "15:40", "16:00", "16:20"
+    ];
+
+    const bloqueios = getLocalData("bloqueiosHorario", {});
+    const dataFormatoISO = formatarDataISO(diaSelecionado);
+    let horariosBloqueados = bloqueios[dataFormatoISO] || [];
+
+    const agendamentos = getLocalData("agendamentos", []);
+    const horariosOcupados = agendamentos
+        .filter(a => a.dia === diaSelecionado && a.cancelado == 0 && !a.oculto)
+        .map(a => a.horario);
+
+    horariosFixos.forEach(horario => {
+        const btn = document.createElement("button");
+        btn.textContent = horario;
+        btn.classList.add("botao-horario");
+        
+        let isOcupado = horariosOcupados.includes(horario);
+        let isBloqueado = horariosBloqueados.includes(horario);
+
+        if (isOcupado && !isBloqueado) {
+            btn.classList.add("ocupado");
+            btn.title = "Horário ocupado por agendamento";
+        } else if (isBloqueado) {
+            btn.classList.add("bloqueado");
+            btn.title = "Horário bloqueado";
+            btn.style.backgroundColor = "gray";
+            btn.style.color = "white";
+        }
+
+        btn.addEventListener("click", function () {
+            if (horariosSelecionadosAdmin.includes(horario)) {
+                horariosSelecionadosAdmin = horariosSelecionadosAdmin.filter(h => h !== horario);
+                btn.classList.remove("selecionado-multiplo");
+            } else {
+               horariosSelecionadosAdmin.push(horario);
+               btn.classList.add("selecionado-multiplo");
+            }
+            if (horariosSelecionadosAdmin.length > 0) {
+                if(divAcoesHorarios) {
+                    divAcoesHorarios.style.display = "block";
+                }
+            }
+        });
+        grade.appendChild(btn);
+    });
+
+    const todosBloqueados = horariosFixos.every(h => horariosBloqueados.includes(h));
+    const btnTodos = document.getElementById("btn-bloquear-todos-horarios");
+    if(btnTodos) {
+        if(todosBloqueados) {
+            btnTodos.innerText = "Desbloquear Todos os Horários";
+            btnTodos.style.backgroundColor = "#28a745"; // Verde
+            btnTodos.onclick = desbloquearTodosHorariosDia;
+        } else {
+            btnTodos.innerText = "Bloquear Todos os Horários (Bloquear Tudo)";
+            btnTodos.style.backgroundColor = "#8b0000"; // Vermelho escuro
+            btnTodos.onclick = bloquearTodosHorariosDia;
+        }
+    }
+}
+
+async function bloquearHorariosSelecionados() {
+    if (horariosSelecionadosAdmin.length === 0) return;
+    
+    const confirm = await Swal.fire({
+        title: 'Bloquear Horários',
+        text: `Tem certeza que deseja bloquear os ${horariosSelecionadosAdmin.length} horários selecionados no dia ${diaSelecionadoAdminHorarios}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, bloquear'
+    });
+    if (!confirm.isConfirmed) return;
+
+    let bloq = getLocalData("bloqueiosHorario", {});
+    let formISO = formatarDataISO(diaSelecionadoAdminHorarios);
+    if(!bloq[formISO]) bloq[formISO] = [];
+    
+    horariosSelecionadosAdmin.forEach(horario => {
+        if(!bloq[formISO].includes(horario)) {
+            bloq[formISO].push(horario);
+        }
+    });
+    setLocalData("bloqueiosHorario", bloq);
+    Swal.fire("Sucesso", "Horários selecionados foram bloqueados.", "success");
+    atualizarHorariosAdmin(diaSelecionadoAdminHorarios);
+}
+
+async function desbloquearHorariosSelecionados() {
+    if (horariosSelecionadosAdmin.length === 0) return;
+
+    const confirm = await Swal.fire({
+        title: 'Desbloquear Horários',
+        text: `Tem certeza que deseja desbloquear os ${horariosSelecionadosAdmin.length} horários selecionados no dia ${diaSelecionadoAdminHorarios}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, desbloquear'
+    });
+    if (!confirm.isConfirmed) return;
+
+    let bloq = getLocalData("bloqueiosHorario", {});
+    let formISO = formatarDataISO(diaSelecionadoAdminHorarios);
+    if(bloq[formISO]) {
+        bloq[formISO] = bloq[formISO].filter(h => !horariosSelecionadosAdmin.includes(h));
+        if(bloq[formISO].length === 0) delete bloq[formISO];
+        setLocalData("bloqueiosHorario", bloq);
+    }
+    Swal.fire("Sucesso", "Horários selecionados foram desbloqueados.", "success");
+    atualizarHorariosAdmin(diaSelecionadoAdminHorarios);
+}
+
+async function bloquearTodosHorariosDia() {
+    const confirm = await Swal.fire({
+        title: 'Bloquear TODOS',
+        text: `Você irá bloquear TODOS os horários do dia ${diaSelecionadoAdminHorarios}. Continuar?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8b0000',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, bloquear todos'
+    });
+    if (!confirm.isConfirmed) return;
+
+    let bloq = getLocalData("bloqueiosHorario", {});
+    let formISO = formatarDataISO(diaSelecionadoAdminHorarios);
+    if(!bloq[formISO]) bloq[formISO] = [];
+    
+    const horariosFixos = [
+        "09:00", "09:20", "09:40", "10:00", "10:20", "10:40",
+        "11:00", "11:20", "11:40", "12:00", "13:20",
+        "13:40", "14:00", "14:20", "14:40", "15:00", "15:20",
+        "15:40", "16:00", "16:20"
+    ];
+
+    horariosFixos.forEach(horario => {
+        if(!bloq[formISO].includes(horario)) {
+            bloq[formISO].push(horario);
+        }
+    });
+    setLocalData("bloqueiosHorario", bloq);
+    Swal.fire("Sucesso", "Todos os horários do dia foram bloqueados.", "success");
+    atualizarHorariosAdmin(diaSelecionadoAdminHorarios);
+}
+
+async function desbloquearTodosHorariosDia() {
+    const confirm = await Swal.fire({
+        title: 'Desbloquear TODOS',
+        text: `Você irá liberar TODOS os horários que estavam bloqueados no dia ${diaSelecionadoAdminHorarios}. Continuar?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sim, desbloquear todos'
+    });
+    if (!confirm.isConfirmed) return;
+
+    let bloq = getLocalData("bloqueiosHorario", {});
+    let formISO = formatarDataISO(diaSelecionadoAdminHorarios);
+    
+    if(bloq[formISO]) {
+        delete bloq[formISO];
+        setLocalData("bloqueiosHorario", bloq);
+    }
+    
+    Swal.fire("Sucesso", "Todos os horários do dia foram desbloqueados.", "success");
+    atualizarHorariosAdmin(diaSelecionadoAdminHorarios);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Inicializa calendários do administrador caso a tela seja a de admin
+    if (window.location.pathname.includes('administrador') || document.querySelector('.admin-sidebar')) {
+        setTimeout(() => {
+            carregarCalendarioAdminHorarios();
+            carregarCalendarioAdminDias();
+        }, 500);
+        
+        // Reconectar o evento de tab para recarregar calendários se for clicada a tab correspondente
+        const btnTabHorarios = document.getElementById("btn-tab-gerenciar-horarios");
+        const btnTabDias = document.getElementById("btn-tab-gerenciar-dias");
+        if(btnTabHorarios) {
+            btnTabHorarios.addEventListener("click", () => {
+                carregarCalendarioAdminHorarios();
+            });
+        }
+        if(btnTabDias) {
+            btnTabDias.addEventListener("click", () => {
+                carregarCalendarioAdminDias();
+            });
+        }
+    }
+});
