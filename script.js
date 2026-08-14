@@ -733,11 +733,7 @@ function entrarComoAdmin() {
             localStorage.removeItem("senhaSalva");
         }
 
-        if (usuario === "Admin.zenith" || usuario === "Admin.geral") {
-            window.open("administrador.php", "_blank");
-        } else {
-            window.open("massagem-frontend/aprendiz.php", "_blank");
-        }
+        window.open("administrador.html", "_blank");
 
         document.getElementById("popupLogin").style.display = "none";
         document.getElementById("usuario").value = "";
@@ -775,31 +771,6 @@ function cancelarLogin() {
 
 function fecharLogin() {
     document.getElementById("popupLogin").style.display = "none";
-}
-
-const botaoLogin = document.getElementById("botao-login");
-if (botaoLogin) {
-    botaoLogin.addEventListener("click", function () {
-        verificarLogin();
-    });
-}
-
-function verificarLogin() {
-    const usuario = document.getElementById("usuario").value.trim();
-    const senha = document.getElementById("senha").value.trim();
-
-    const usuarioCorreto = "Admin.zenith";
-    const senhaCorreta = "Maça@1978";
-
-    if (usuario === usuarioCorreto && senha === senhaCorreta) {
-        let novaAba = window.open("Massagem/administrador.php", "_blank");
-
-        if (!novaAba) {
-            alert("O navegador bloqueou a abertura da nova aba. Permita pop-ups e tente novamente.");
-        }
-    } else {
-        mostrarAlerta("Usuário ou senha incorretos!", "erro");
-    }
 }
 
 
