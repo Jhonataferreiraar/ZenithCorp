@@ -1854,42 +1854,6 @@ function removerNoticiaLiberacao() {
         });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    function showDailyCollaborationAlert() {
-        const lastShownDate = localStorage.getItem('lastCollaborationAlertShownDate');
-        const today = new Date().toDateString();
-
-        if (lastShownDate !== today) {
-            Swal.fire({
-                title: 'Atenção',
-                html: `
-          <p>Prezado colaborador, por favor recarregue a página usando <b>Ctrl + Shift + R</b>.</p>
-          <p style="font-size: 0.9em; color: #152C4A;">
-            Este comando força a página a buscar a versão mais recente diretamente do servidor,
-            garantindo que você visualize as últimas atualizações e recursos.
-          </p>
-        `,
-                icon: 'info',
-                confirmButtonText: 'Entendi',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                didOpen: () => {
-                    const confirmButton = Swal.getConfirmButton();
-                    if (confirmButton) {
-                        confirmButton.focus();
-                    }
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    localStorage.setItem('lastCollaborationAlertShownDate', today);
-                }
-            });
-        }
-    }
-
-    showDailyCollaborationAlert();
-});
-
 document.addEventListener("DOMContentLoaded", () => {
     const emailInput = document.getElementById("consultaEmail");
     const btnConsultar = document.getElementById("btnConsultar");

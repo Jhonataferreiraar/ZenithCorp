@@ -1,328 +1,177 @@
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="130">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Agendamento de Massagem</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="theme-color" content="#102a43">
+    <meta name="description" content="Agende sua pausa de bem-estar na Zenith Corp.">
+    <title>Zenith Bem-Estar | Agendamento de Massagem</title>
+    <link rel="icon" type="image/png" href="Zenith Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="public.css">
 </head>
-
 <body>
+    <header class="site-header" id="inicio">
+        <a class="brand" href="#inicio" aria-label="Zenith Corp - início">
+            <img src="Zenith Logo.png" alt="Zenith Corp">
+            <span><strong>Zenith</strong><small>bem-estar corporativo</small></span>
+        </a>
+        <nav class="desktop-nav" aria-label="Navegação principal">
+            <a href="#experiencia">A experiência</a>
+            <a href="#agendamento">Agendar</a>
+            <a href="#orientacoes">Orientações</a>
+        </nav>
+        <button class="header-bookings" type="button" data-open-bookings>
+            <i class="fa-regular fa-calendar-check"></i>
+            Meus agendamentos
+        </button>
+    </header>
 
-    <button class="btn-adm-topo" onclick="abrirLogin()"><b>Administrador(a)</b></button>
-	
-	<div id="popupMotivacional"><span id="textoMotivacional"></span></div>
-
-    <div class="background-container">
-        <div class="container">
-            <div class="logo">
-                <img src="Zenith Logo.png" alt="Logo Zenith" onerror="this.src='massagem-frontend/Zenith Logo.png'; this.onerror=null;">
-            </div>
-            <h1>Painel de Agendamento</h1>
-
-            <p><b>Prezado colaborador, por gentileza, agende seu horário e fique atento à data marcada!</b></p>
-            
-			<div id="noticiaLiberacao"></div>		
-			<div id="mensagemLiberacao" style="margin-top: 10px; font-weight: bold; color: #152C4A;"></div>
-
-            <button id="botao-consulta" onclick="abrirPopupConsulta()">Consultar Agendamento</button>
-
-            <div class="legenda-calendario">
-                <span><span class="bolinha amarelo"></span> Dias de Massagem</span>
-                <span><span class="bolinha vermelho"></span> Feriados</span>
-                <span><span class="bolinha cinza"></span> Dias passados</span>
-                <span><span class="bolinha hoje"></span> Hoje</span>
-            </div>
-        </div>
-
-        <div class="container2">
-            <input type="text" id="nome" placeholder="Ex.: jhonata.araujo">
-            <input type="email" id="email" placeholder="Seu e-mail">
-
-            <div id="calendario-container">
-                <h3 id="mes-atual"></h3>
-                <div class="dias-semana">
-                    <div>Dom</div>
-                    <div>Seg</div>
-                    <div>Ter</div>
-                    <div>Qua</div>
-                    <div>Qui</div>
-                    <div>Sex</div>
-                    <div>Sáb</div>
+    <main>
+        <section class="hero">
+            <div class="hero-media" aria-hidden="true"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <p class="eyebrow"><span></span> Programa Zenith de Bem-Estar</p>
+                <h1>Uma pausa para voltar ao seu <em>melhor ritmo.</em></h1>
+                <p class="hero-copy">Reserve alguns minutos para aliviar tensões, desacelerar e renovar sua energia durante o dia de trabalho.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#agendamento">Agendar minha sessão <i class="fa-solid fa-arrow-right"></i></a>
+                    <button class="button button-ghost" type="button" data-open-bookings>Consultar reserva</button>
                 </div>
-                <div id="calendario" class="calendario"></div>
+                <div class="hero-meta">
+                    <div><i class="fa-regular fa-clock"></i><span><strong>20 minutos</strong>de cuidado</span></div>
+                    <div><i class="fa-solid fa-building"></i><span><strong>Na Zenith Corp</strong>durante o expediente</span></div>
+                    <div><i class="fa-regular fa-face-smile"></i><span><strong>Sem custo</strong>para colaboradores</span></div>
+                </div>
+            </div>
+            <div class="hero-note"><span>Respire</span><i></i><span>Relaxe</span><i></i><span>Renove</span></div>
+        </section>
+
+        <section class="experience section" id="experiencia">
+            <div class="section-heading">
+                <p class="eyebrow dark"><span></span> Seu momento</p>
+                <h2>Bem-estar que cabe<br>na sua rotina.</h2>
+            </div>
+            <div class="experience-copy">
+                <p>A massagem corporativa é uma pausa breve e intencional para cuidar do corpo e da mente. Uma experiência criada para você retornar às atividades com mais leveza, foco e disposição.</p>
+                <div class="benefit-grid">
+                    <article><span>01</span><i class="fa-solid fa-wind"></i><h3>Menos tensão</h3><p>Alívio para ombros, pescoço e costas.</p></article>
+                    <article><span>02</span><i class="fa-solid fa-bolt"></i><h3>Mais energia</h3><p>Uma pausa que ajuda a renovar o ritmo.</p></article>
+                    <article><span>03</span><i class="fa-solid fa-brain"></i><h3>Mais foco</h3><p>Clareza para seguir o restante do dia.</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section class="booking-section" id="agendamento">
+            <div class="booking-intro">
+                <p class="eyebrow"><span></span> Agende sua pausa</p>
+                <h2>Seu momento começa aqui.</h2>
+                <p>Escolha uma data disponível, selecione o melhor horário e confirme com seus dados corporativos.</p>
+                <ol class="steps" aria-label="Etapas do agendamento">
+                    <li class="active" data-step-indicator="1"><b>1</b><span>Escolha a data</span></li>
+                    <li data-step-indicator="2"><b>2</b><span>Selecione o horário</span></li>
+                    <li data-step-indicator="3"><b>3</b><span>Confirme seus dados</span></li>
+                </ol>
+                <div class="booking-help">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <div><strong>Precisa consultar uma reserva?</strong><button type="button" data-open-bookings>Ver meus agendamentos</button></div>
+                </div>
             </div>
 
-            <p></p>
+            <div class="booking-card">
+                <div class="booking-step active" data-step="1">
+                    <div class="card-heading">
+                        <div><span>Etapa 1 de 3</span><h3>Escolha uma data</h3></div>
+                        <div class="calendar-legend"><i></i> disponível</div>
+                    </div>
+                    <div class="calendar-header">
+                        <button type="button" id="prev-month" aria-label="Mês anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                        <strong id="calendar-title"></strong>
+                        <button type="button" id="next-month" aria-label="Próximo mês"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                    <div class="weekdays" aria-hidden="true"><span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span></div>
+                    <div class="calendar-grid" id="calendar-grid" role="grid" aria-label="Calendário de datas disponíveis"></div>
+                    <div class="calendar-footnote"><i class="fa-solid fa-circle-info"></i> As sessões acontecem às quartas e sextas-feiras, salvo datas especiais.</div>
+                </div>
 
-            <div id="grade-horarios" class="grade-horarios"></div>
-            <input type="hidden" id="horarioSelecionado">
-            <button onclick="agendar()">Agendar</button>
-        </div>
-    </div>
+                <div class="booking-step" data-step="2">
+                    <button class="back-button" type="button" data-back><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+                    <div class="card-heading">
+                        <div><span>Etapa 2 de 3</span><h3>Selecione um horário</h3></div>
+                        <div class="selected-date-pill" id="selected-date-pill"></div>
+                    </div>
+                    <p class="step-caption">Cada sessão tem duração de 20 minutos.</p>
+                    <div class="time-period"><span>Manhã</span><i></i></div>
+                    <div class="time-grid" id="morning-times"></div>
+                    <div class="time-period"><span>Tarde</span><i></i></div>
+                    <div class="time-grid" id="afternoon-times"></div>
+                    <div class="time-legend"><span><i class="available"></i>Disponível</span><span><i class="unavailable"></i>Indisponível</span></div>
+                </div>
 
-    <!-- Popup de Confirmação -->
-    <div id="popupConfirmacao" class="popup-overlay" style="display: none;">
-        <div class="popup-box">
-            <h3>Confirmar Agendamento</h3>
-            <p id="textoConfirmacao"></p>
-            <button onclick="confirmarAgendamento()">Confirmar</button>
-            <button onclick="fecharPopup()">Cancelar</button> 
-        </div>
-    </div>
+                <div class="booking-step" data-step="3">
+                    <button class="back-button" type="button" data-back><i class="fa-solid fa-arrow-left"></i> Voltar</button>
+                    <div class="card-heading">
+                        <div><span>Etapa 3 de 3</span><h3>Confirme seus dados</h3></div>
+                    </div>
+                    <div class="appointment-summary">
+                        <div><i class="fa-regular fa-calendar"></i><span>Data<strong id="summary-date"></strong></span></div>
+                        <div><i class="fa-regular fa-clock"></i><span>Horário<strong id="summary-time"></strong></span></div>
+                        <button type="button" id="change-selection">Alterar</button>
+                    </div>
+                    <form id="booking-form" novalidate>
+                        <label>Usuário corporativo<input type="text" id="booking-name" autocomplete="username" placeholder="Ex.: jhonata.araujo" pattern="[A-Za-z]+\.[A-Za-z]+" required></label>
+                        <label>E-mail corporativo<input type="email" id="booking-email" autocomplete="email" placeholder="nome@zenithcorp.com.br" required></label>
+                        <label class="consent"><input type="checkbox" id="booking-consent" required><span>Confirmo que estarei disponível no horário escolhido e li as orientações da sessão.</span></label>
+                        <p class="form-error" id="form-error" role="alert"></p>
+                        <button class="button button-submit" id="booking-submit" type="submit"><span>Confirmar agendamento</span> <i class="fa-solid fa-arrow-right"></i></button>
+                    </form>
+                </div>
 
-    <!-- Login ADM -->
-    <div id="popupLogin" class="popup" style="display: none;">
-		<label>
-			<input type="checkbox" id="lembrarLogin"> Lembrar login
-		</label>
-
-		<div class="login-box">
-			<h2>Login do Administrador</h2>
-			<label for="usuario">Usuário:</label>
-			<input type="text" id="usuario" placeholder="Digite seu usuário"/>
-			<label for="senha">Senha:</label>
-			<input type="password" id="senha" placeholder="Digite sua senha"/>
-			<button onclick="entrarComoAdmin()" id="botao-login">Entrar</button>
-			<button onclick="cancelarLogin()">Cancelar</button>
-		</div>
-    </div>
-
-	<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const usuarioInput = document.getElementById("usuario");
-		const senhaInput = document.getElementById("senha");
-		const botaoLogin = document.getElementById("botao-login");
-
-		// Se os elementos existirem, adiciona os listeners
-		if (usuarioInput && senhaInput && botaoLogin) {
-		[usuarioInput, senhaInput].forEach(input => {
-			input.addEventListener("keydown", function (event) {
-			if (event.key === "Enter") {
-				event.preventDefault(); // Evita enviar um formulário se existir
-				botaoLogin.click();     // Simula o clique no botão
-			}
-			});
-		});
-		}
-	});
-	</script>
-
-
-    <div id="popupConsultaAgendamento" class="popup-overlay" style="display: none;">
-        <div class="popup-box">
-            <h2>Consultar Agendamento</h2>
-
-            <div class="input-group">
-                <label for="consultaEmail">E-mail:</label>
-                <input type="email" id="consultaEmail" placeholder="Digite seu e-mail">
+                <div class="booking-step success-step" data-step="4">
+                    <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+                    <p class="eyebrow dark"><span></span> Reserva confirmada</p>
+                    <h3>Seu momento está agendado.</h3>
+                    <p>Os detalhes da reserva estão disponíveis em “Meus agendamentos”. Chegue com alguns minutos de antecedência e aproveite sua pausa.</p>
+                    <div class="success-summary" id="success-summary"></div>
+                    <button class="button button-primary" id="new-booking" type="button">Fazer novo agendamento</button>
+                </div>
             </div>
+        </section>
 
-            <div class="button-container">
-                <button id="btnConsultar" onclick="consultarAgendamento()">Consultar</button>
-                <button onclick="fecharConsulta()">Fechar</button>
+        <section class="guidance section" id="orientacoes">
+            <div class="guidance-image"><div><span>20</span><small>minutos para<br>você</small></div></div>
+            <div class="guidance-content">
+                <p class="eyebrow dark"><span></span> Antes da sessão</p>
+                <h2>Chegue leve.<br>A gente cuida do resto.</h2>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i><span><strong>Chegue 5 minutos antes</strong> para iniciar sua sessão com tranquilidade.</span></li>
+                    <li><i class="fa-solid fa-check"></i><span><strong>Use roupas confortáveis.</strong> A técnica é realizada sobre a roupa.</span></li>
+                    <li><i class="fa-solid fa-check"></i><span><strong>Avise sobre qualquer restrição</strong> ou desconforto antes do atendimento.</span></li>
+                </ul>
+                <p class="guidance-note"><i class="fa-solid fa-heart-pulse"></i> Em caso de gestação, lesão ou condição de saúde, consulte seu médico antes da sessão.</p>
             </div>
+        </section>
+    </main>
 
-            <div id="resultadoConsulta" class="resultado-consulta" style="display: none;"></div>
+    <footer>
+        <div class="footer-brand"><img src="Zenith Logo.png" alt="Zenith Corp"><div><strong>Zenith Corp</strong><span>Bem-estar que impulsiona pessoas.</span></div></div>
+        <div class="footer-links"><a href="#experiencia">A experiência</a><a href="#agendamento">Agendar</a><button type="button" data-open-bookings>Minhas reservas</button></div>
+        <p>© 2026 Zenith Corp. Todos os direitos reservados.</p>
+    </footer>
 
-            <div class="button-container" id="botaoComprovanteContainer" style="display: none;">
-                <button onclick="gerarComprovante()">Gerar Comprovante</button>
-            </div>
-        </div>    
-    </div>
-	
-	<div id="popupEdicaoUsuario" class="popup-overlay" style="display: none;">
-		<div class="popup-box">
-			<h2>Editar Agendamento</h2>
-			<input type="hidden" id="editarIdUsuario">
-			<input type="hidden" id="editarEmailUsuario">
-			<label>Data:</label>
-			<input type="date" id="editarDataUsuario">
-			<label>Horário:</label>
-			<select id="editarHorarioUsuario">
-				<option value="">Selecione um horário</option>
-			</select>
+    <dialog id="bookings-dialog" class="modal">
+        <div class="modal-header"><div><span>Área do colaborador</span><h2>Meus agendamentos</h2></div><button type="button" data-close-modal aria-label="Fechar"><i class="fa-solid fa-xmark"></i></button></div>
+        <p>Digite seu e-mail corporativo para consultar suas reservas.</p>
+        <form id="lookup-form"><label>E-mail corporativo<input id="lookup-email" type="email" placeholder="nome@zenithcorp.com.br" required></label><button class="button button-primary" type="submit">Consultar</button></form>
+        <div id="bookings-results" class="bookings-results"></div>
+    </dialog>
 
-			<div class="button-container">
-				<button onclick="salvarEdicaoUsuario()">Salvar</button>
-				<button onclick="fecharEdicaoUsuario()">Cancelar</button>
-			</div>
-		</div>
-	</div>
-
-
-    <div id="mensagem-confirmacao" class="mensagem-oculta"></div>
-    <div id="alerta-personalizado" class="alerta"></div> 
-
-    <!-- Popup do Código de Verificação -->
-    <div id="popupCodigo" class="popup-overlay" style="display: none;">
-        <div class="popup-box">
-            <h3>Verificação de Código</h3>
-            <p>Enviamos um código para seu e-mail. Insira abaixo:</p>           
-            <input type="text" id="codigoConfirmacao" placeholder="Código de 6 dígitos" />
-            <div id="contador-tempo" style="display: none; color: red; font-weight: bold; margin-top: 10px;">
-                Tempo restantepara confirmação: <span id="tempo-restante">120</span>s
-            </div> 
-            <button onclick="verificarCodigoDigitado()">Confirmar Código</button>
-            <button onclick="reenviarCodigo()"
-                style="margin-top: 10px; background-color: #F59E0B; border: none; color: white; padding: 10px 20px; border-radius: 5px;">Reenviar
-                Código</button>
-            <button onclick="fecharPopupCodigo()">Cancelar</button>
-        </div>
-    </div>
-
-    <div id="spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-        z-index: 9999; background: rgba(255, 255, 255, 0.8); padding: 30px; border-radius: 10px; text-align: center;">
-        <p>Enviando...</p>
-    </div>  
-	
-	<!-- TELA DE MANUTENÇÃO ZENITH COM LOGO E MENSAGEM DINÂMICA 
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-	<div id="overlay-manutencao" style="
-	  position: fixed;
-	  top: 0; left: 0;
-	  width: 100vw;
-	  height: 100vh;
-	  background-color: #152C4A;
-	  z-index: 99999;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  overflow: hidden;
-	  font-family: 'Poppins', sans-serif;
-	  color: white;
-	  text-align: center;
-	  flex-direction: column;
-	  padding: 30px;
-	">
-
-	  <div style="
-		font-size: 60px;
-		color: #FACC15;
-		margin-bottom: 20px;
-		animation: girar 6s linear infinite;
-	  "><i class="fa-solid fa-wrench"></i></div>
-
-	  <h1 style="
-		font-size: 2.5em;
-		animation: pulsar 2.5s ease-in-out infinite;
-		margin-bottom: 10px;
-	  ">Estamos em manutenção</h1>
-
-	  <p id="mensagem-dinamica" style="
-		font-size: 1.2em;
-		opacity: 0.95;
-		min-height: 50px;
-		transition: opacity 0.5s ease-in-out;
-	  ">
-		Carregando...
-	  </p>
-
-	</div>
-
-	<style>
-	@keyframes girar {
-	  0% { transform: rotate(0deg); }
-	  100% { transform: rotate(360deg); }
-	}
-	@keyframes pulsar {
-	  0%, 100% { transform: scale(1); opacity: 1; }
-	  50% { transform: scale(1.05); opacity: 0.95; }
-	}
-	</style>
-
-	<script>
-	  const mensagens = [
-		"Estamos atualizando nosso sistema para melhor atendê-lo.",
-		"Em breve, tudo estará de volta ao normal.",
-		"Agradecemos a sua compreensão!"
-	  ];
-
-	  const elemento = document.getElementById("mensagem-dinamica");
-	  let indice = 0;
-
-	  function trocarMensagem() {
-		elemento.style.opacity = 0;
-		setTimeout(() => {
-		  elemento.textContent = mensagens[indice];
-		  elemento.style.opacity = 1;
-		  indice = (indice + 1) % mensagens.length;
-		}, 500);
-	  }
-
-	  trocarMensagem();
-	  setInterval(trocarMensagem, 5000); // troca a cada 5 segundos
-	</script>
-
-	Controle (remova para deixar fixo)
-	<script>
-	  const mostrarManutencao = true; // Altere para false para desativar
-	  if (!mostrarManutencao) {
-		document.getElementById('overlay-manutencao')?.remove();
-	  }
-	</script>
-	FIM: Tela de Manutenção -->
-
-	<script>
-	  // Frases motivacionais
-	  const frases = [
-		"Deixar o cuidado de lado também é uma escolha... só não a melhor.",
-		"Trabalhar sem pausa? Seu corpo vai cobrar a fatura.",
-		"Ignorar seu bem-estar não torna você mais produtivo.",
-		"Nunca parar não é sinal de força, é sinal de alerta.",
-		"Adiar o descanso não acelera a conquista.",
-		"Corpo cansado, mente travada. Você sente, só não admite."
-	  ];
-
-	  // Escolhe uma frase aleatória
-	  const fraseEscolhida = frases[Math.floor(Math.random() * frases.length)];
-
-	  // Insere no span do popup motivacional
-	  document.addEventListener("DOMContentLoaded", function () {
-		const span = document.getElementById("textoMotivacional");
-		if (span) {
-		  span.textContent = fraseEscolhida;
-		}
-	  });
-	</script>
-
-	<!-- Bloquear os comandos: Ctrl + I / J / C e Ctrl+Shift+I/J/C 
-	<script>
-	document.addEventListener('keydown', function(e) {
-	  if (
-		e.keyCode === 123 || // F12
-		(e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) || // Ctrl+Shift+I/J/C
-		(e.ctrlKey && e.key.toUpperCase() === 'U') // Ctrl+U
-	  ) {
-		e.preventDefault();
-	  }
-	});
-	</script> 
-	
-	<script>
-	document.addEventListener('contextmenu', function(e) {
-	  e.preventDefault();
-	});
-	</script> 
-	
-	<script>
-	window.addEventListener("storage", function (event) {
-		if (event.key === "noticiaRemovida") {
-			console.log("🔁 Recarregando notícia de liberação...");
-			carregarNoticiaLiberacao(); // força atualização da div
-		}
-	});
-	</script> -->
-
-    <script src="script.js"></script>
+    <div class="toast" id="toast" role="status" aria-live="polite"><i class="fa-solid fa-check"></i><span></span></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="public.js?v=zenith-rules-2026-4"></script>
 </body>
 </html>
-
-

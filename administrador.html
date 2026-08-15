@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Administrador - Zenith Massagem</title>
+    <title>Zenith Bem-Estar | Painel Administrativo</title>
+    <link rel="icon" type="image/png" href="Zenith Logo.png">
     <!-- XLSX and SweetAlert2 dependencies -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin-theme.css">
 </head>
 <body class="admin-body">
 
@@ -19,7 +21,7 @@
             <div class="logo">
                 <img src="Zenith Sidebar.png" alt="Logo Zenith" onerror="this.src='massagem-frontend/Zenith Sidebar.png'; this.onerror=null;" />
             </div>
-            <h2 class="brand-text">Zenith</h2>
+            <h2 class="brand-text">Zenith <small>Bem-Estar</small></h2>
         </div>
         <nav class="sidebar-menu">
             <button onclick="switchTab('dashboard')" class="menu-item active" id="btn-tab-dashboard">
@@ -39,6 +41,9 @@
             </button>
             <button onclick="switchTab('relatorios')" class="menu-item" id="btn-tab-relatorios">
                 <span class="menu-icon"><i class="fa-solid fa-chart-line"></i></span> <span class="menu-text">Relatórios</span>
+            </button>
+            <button onclick="switchTab('acessos')" class="menu-item" id="btn-tab-acessos">
+                <span class="menu-icon"><i class="fa-solid fa-user-shield"></i></span> <span class="menu-text">E-mails Admin</span>
             </button>
         </nav>
         <div class="sidebar-footer">
@@ -363,6 +368,51 @@
             </div>
         </section>
 
+        <!-- TAB: E-mails Administrativos -->
+        <section id="sec-acessos" class="tab-content">
+            <div class="access-settings">
+                <div class="access-settings-intro">
+                    <p class="access-kicker">Permissões de agendamento</p>
+                    <h2>E-mails administrativos</h2>
+                    <p>As contas cadastradas abaixo podem realizar agendamentos sem limite mensal e não precisam selecionar sessões consecutivas. Horários já ocupados continuam indisponíveis para evitar conflitos.</p>
+                </div>
+                <div class="access-settings-card">
+                    <form id="admin-email-form" class="admin-email-form">
+                        <label for="novo-email-admin">Adicionar e-mail corporativo</label>
+                        <div>
+                            <input type="email" id="novo-email-admin" placeholder="nome@zenithcorp.com.br" autocomplete="off" required>
+                            <button type="submit"><i class="fa-solid fa-plus"></i> Adicionar</button>
+                        </div>
+                        <p id="admin-email-error" class="admin-email-error" role="alert"></p>
+                    </form>
+                    <div class="admin-email-list-header">
+                        <span>Contas autorizadas</span>
+                        <strong id="admin-email-count">0</strong>
+                    </div>
+                    <div id="admin-email-list" class="admin-email-list"></div>
+                </div>
+                <div class="access-settings-card blocked-settings-card">
+                    <div class="blocked-settings-heading">
+                        <span class="blocked-settings-icon"><i class="fa-solid fa-user-slash"></i></span>
+                        <div><h3>E-mails bloqueados</h3><p>Estas contas não poderão realizar novos agendamentos.</p></div>
+                    </div>
+                    <form id="blocked-email-form" class="admin-email-form">
+                        <label for="novo-email-bloqueado">Bloquear e-mail corporativo</label>
+                        <div>
+                            <input type="email" id="novo-email-bloqueado" placeholder="nome@zenithcorp.com.br" autocomplete="off" required>
+                            <button type="submit" class="block-email-button"><i class="fa-solid fa-ban"></i> Bloquear</button>
+                        </div>
+                        <p id="blocked-email-error" class="admin-email-error" role="alert"></p>
+                    </form>
+                    <div class="admin-email-list-header">
+                        <span>Contas bloqueadas</span>
+                        <strong id="blocked-email-count">0</strong>
+                    </div>
+                    <div id="blocked-email-list" class="admin-email-list"></div>
+                </div>
+            </div>
+        </section>
+
     </main>
 </div>
 
@@ -457,7 +507,8 @@
             'gerenciar-horarios': 'Gerenciamento de Horários',
             'gerenciar-dias': 'Gerenciamento de Dias',
             'liberacao': 'Liberação de Mês',
-            'relatorios': 'Gerar Relatórios'
+            'relatorios': 'Gerar Relatórios',
+            'acessos': 'E-mails Administrativos'
         };
         document.getElementById('active-tab-title').innerText = titles[tabId] || 'Painel de Controle';
 
@@ -517,6 +568,7 @@
     });
 </script>
 
-<script src="script.js"></script>
+<script src="script.js?v=zenith-2026"></script>
+<script src="admin-access.js?v=2"></script>
 </body>
 </html>

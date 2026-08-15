@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap');
+
+:root { --zenith-navy:#102a43; --zenith-deep:#091c2e; --zenith-copper:#c9824b; --zenith-cream:#f6f2eb; --zenith-paper:#fffdf9; --zenith-muted:#6d7a84; --zenith-line:#e1e6e8; }
+.admin-body { background:#f4f6f6 !important; color:#172b3a; font-family:"DM Sans",sans-serif !important; }
+.admin-sidebar { background:var(--zenith-deep) !important; box-shadow:none !important; border-right:1px solid rgba(255,255,255,.05); }
+.sidebar-brand { min-height:126px; border-bottom:1px solid rgba(255,255,255,.07); }
+.sidebar-brand .logo img { width:56px !important; height:56px !important; object-fit:contain; }
+.sidebar-brand .brand-text { color:#fff !important; text-transform:uppercase; letter-spacing:.12em; font:600 17px "Manrope",sans-serif !important; }
+.sidebar-brand .brand-text small { display:block; margin-top:5px; color:var(--zenith-copper); font-size:7px; letter-spacing:.18em; }
+.sidebar-menu { padding:24px 13px !important; gap:6px !important; }
+.sidebar-menu .menu-item { min-height:48px; border-radius:2px !important; color:#8ea2b4 !important; font-size:13px !important; font-weight:500 !important; transition:.2s !important; }
+.sidebar-menu .menu-item:hover { color:#fff !important; background:rgba(255,255,255,.06) !important; transform:none !important; }
+.sidebar-menu .menu-item.active { color:#fff !important; background:var(--zenith-copper) !important; box-shadow:none !important; }
+.sidebar-menu .menu-icon { color:inherit !important; }
+.sidebar-footer { border-top:1px solid rgba(255,255,255,.07); }
+.sidebar-footer .footer-text { color:#63798b !important; }
+.admin-main { background:#f4f6f6 !important; }
+.admin-topbar { min-height:78px !important; padding:0 34px !important; background:rgba(255,255,255,.92) !important; border-bottom:1px solid var(--zenith-line) !important; box-shadow:none !important; backdrop-filter:blur(12px); }
+.admin-topbar h1 { color:var(--zenith-navy) !important; font:600 23px "Manrope",sans-serif !important; letter-spacing:-.02em; }
+.hamburger-btn { color:var(--zenith-navy) !important; border:1px solid var(--zenith-line) !important; background:#fff !important; border-radius:2px !important; }
+.topbar-btn { color:var(--zenith-navy) !important; border:1px solid var(--zenith-line) !important; background:#fff !important; border-radius:2px !important; box-shadow:none !important; font-size:11px !important; }
+.topbar-btn:hover { color:#fff !important; background:var(--zenith-navy) !important; border-color:var(--zenith-navy) !important; transform:translateY(-1px); }
+.tab-content { padding:30px 34px 55px !important; }
+.stats-grid { gap:18px !important; }
+.stat-card { min-height:122px; padding:24px !important; border:1px solid var(--zenith-line) !important; border-radius:3px !important; background:var(--zenith-paper) !important; box-shadow:none !important; position:relative; overflow:hidden; }
+.stat-card::before { content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--zenith-copper); }
+.stat-card .stat-icon { width:48px; height:48px; border-radius:50% !important; display:grid; place-items:center; color:var(--zenith-copper) !important; background:rgba(201,130,75,.1) !important; font-size:19px !important; }
+.stat-info h4 { color:var(--zenith-muted) !important; font-size:10px !important; font-weight:700 !important; text-transform:uppercase; letter-spacing:.08em; }
+.stat-info p { color:var(--zenith-navy) !important; font:600 29px "Manrope",sans-serif !important; }
+.dashboard-widgets { gap:18px !important; }
+.widget-card,.box-agendamentos,.container2,.relatorio-container { border:1px solid var(--zenith-line) !important; border-radius:3px !important; background:var(--zenith-paper) !important; box-shadow:none !important; }
+.widget-card { padding:28px !important; }
+.welcome-card { border-left:3px solid var(--zenith-copper) !important; }
+.widget-card h3,.box-agendamentos h2,.section-subtitle { color:var(--zenith-navy) !important; font-family:"Manrope",sans-serif !important; }
+.widget-card p,.container2 p { color:var(--zenith-muted) !important; line-height:1.7; }
+.quick-btn { color:var(--zenith-navy) !important; background:var(--zenith-cream) !important; border:1px solid transparent !important; border-radius:2px !important; box-shadow:none !important; }
+.quick-btn:hover { color:#fff !important; background:var(--zenith-navy) !important; transform:translateY(-1px) !important; }
+.admin-body button:not(.menu-item):not(.topbar-btn):not(.hamburger-btn):not(.quick-btn):not(.swal2-styled) { border-radius:2px; }
+.admin-body input,.admin-body select { border-radius:2px !important; border-color:var(--zenith-line) !important; font-family:"DM Sans",sans-serif !important; }
+.admin-body input:focus,.admin-body select:focus { border-color:var(--zenith-copper) !important; box-shadow:0 0 0 3px rgba(201,130,75,.1) !important; }
+.calendario .ativo,.calendario .dia-ativo { background:var(--zenith-navy) !important; color:#fff !important; }
+.calendario .selecionado { background:var(--zenith-copper) !important; color:#fff !important; }
+.botao-horario:not(:disabled) { border-color:var(--zenith-line) !important; color:var(--zenith-navy) !important; background:#fff !important; }
+.botao-horario:not(:disabled):hover,.botao-horario.selecionado { color:#fff !important; background:var(--zenith-navy) !important; }
+.swal2-popup { border-radius:3px !important; font-family:"DM Sans",sans-serif !important; }
+.swal2-title { color:var(--zenith-navy) !important; font-family:"Manrope",sans-serif !important; }
+.access-settings { display:grid; grid-template-columns:minmax(260px,.72fr) minmax(460px,1.28fr); gap:clamp(35px,6vw,90px); align-items:start; max-width:1120px; }
+.access-settings-intro { padding:22px 0; }
+.access-kicker { margin:0 0 12px; color:var(--zenith-copper) !important; text-transform:uppercase; letter-spacing:.15em; font-size:10px; font-weight:700; }
+.access-settings-intro h2 { margin:0 0 18px; color:var(--zenith-navy); font:600 clamp(28px,3vw,42px)/1.1 "Manrope",sans-serif; letter-spacing:-.035em; }
+.access-settings-intro > p:last-child { max-width:440px; color:var(--zenith-muted); font-size:13px; line-height:1.75; }
+.access-settings-card { padding:30px; background:var(--zenith-paper); border:1px solid var(--zenith-line); border-radius:3px; }
+.admin-email-form label { display:block; margin-bottom:10px; color:var(--zenith-navy); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
+.admin-email-form > div { display:grid; grid-template-columns:1fr auto; gap:10px; }
+.admin-email-form input { min-height:46px; padding:0 14px !important; }
+.admin-email-form button { padding:0 18px; border:0; background:var(--zenith-navy); color:#fff; cursor:pointer; font-size:11px; font-weight:700; }
+.admin-email-error { min-height:16px; margin:8px 0 2px; color:#a44040 !important; font-size:10px; }
+.admin-email-list-header { margin-top:23px; padding:16px 0 10px; border-top:1px solid var(--zenith-line); display:flex; align-items:center; justify-content:space-between; color:var(--zenith-muted); text-transform:uppercase; letter-spacing:.08em; font-size:9px; font-weight:700; }
+.admin-email-list-header strong { width:25px; height:25px; border-radius:50%; display:grid; place-items:center; background:var(--zenith-cream); color:var(--zenith-navy); }
+.admin-email-list { display:grid; gap:8px; }
+.admin-email-item { min-height:68px; padding:12px 14px; display:grid; grid-template-columns:auto 1fr auto; gap:13px; align-items:center; background:#f7f5f0; border:1px solid transparent; }
+.admin-email-item:hover { border-color:#e5d5c6; }
+.admin-email-icon { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; background:rgba(201,130,75,.12); color:var(--zenith-copper); }
+.admin-email-item div { min-width:0; display:flex; flex-direction:column; }
+.admin-email-item strong { overflow:hidden; text-overflow:ellipsis; color:var(--zenith-navy); font-size:12px; }
+.admin-email-item small { margin-top:4px; color:var(--zenith-muted); font-size:9px; }
+.admin-email-item button { width:34px; height:34px; border:0; background:transparent; color:#a44040; cursor:pointer; }
+.admin-email-empty { padding:28px; text-align:center; background:var(--zenith-cream); color:var(--zenith-muted); font-size:11px; }
+.blocked-settings-card { grid-column:2; }
+.blocked-settings-heading { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+.blocked-settings-icon { width:42px; height:42px; border-radius:50%; display:grid; place-items:center; background:rgba(164,64,64,.1); color:#a44040; }
+.blocked-settings-heading h3 { margin:0; color:var(--zenith-navy); font:600 18px "Manrope",sans-serif; }
+.blocked-settings-heading p { margin:4px 0 0; color:var(--zenith-muted); font-size:10px; }
+.admin-email-form .block-email-button { background:#a44040; }
+.blocked-email-item { background:#fbf3f1; }
+.blocked-email-item .admin-email-icon { background:rgba(164,64,64,.1); color:#a44040; }
+@media (max-width:768px) { .admin-topbar{padding:0 16px !important}.tab-content{padding:22px 16px 45px !important}.topbar-btn{width:38px;overflow:hidden;white-space:nowrap;font-size:0 !important}.topbar-btn i{font-size:13px} }
+@media (max-width:900px) { .access-settings{grid-template-columns:1fr}.access-settings-intro{padding-bottom:0}.blocked-settings-card{grid-column:auto} }
+@media (max-width:520px) { .admin-email-form>div{grid-template-columns:1fr}.admin-email-form button{min-height:44px} }

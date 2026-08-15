@@ -1,185 +1,70 @@
-<div align="center">
+# Zenith Bem-Estar
 
-# 💆 Zenith Corp. — Sistema de Agendamento de Massagens
+Site de agendamento de massagens corporativas da Zenith Corp, com experiência pública de reserva e painel administrativo integrado.
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+## Experiência pública
 
-Sistema completo de agendamento de massagem corporativa com painel administrativo, desenvolvido com foco em usabilidade, design moderno e praticidade para empresas.
+O arquivo `index.html` é a entrada principal do site. Ele oferece:
 
-</div>
+- apresentação do programa de bem-estar da Zenith Corp;
+- calendário com dias disponíveis;
+- horários ocupados e bloqueados em tempo real;
+- agendamento em três etapas;
+- validação de e-mail `@zenithcorp.com.br`;
+- limite de dois agendamentos por colaborador no mês;
+- consulta e cancelamento de reservas;
+- edição de reservas futuras e registro no histórico administrativo;
+- geração de comprovante em PDF;
+- layout responsivo para computador e celular;
+- orientações para o atendimento.
 
----
+## Regras de agendamento
 
-## 📋 Sobre o Projeto
+- O usuário deve seguir o padrão `nome.sobrenome`.
+- O e-mail deve pertencer ao domínio `@zenithcorp.com.br`.
+- O mesmo usuário e e-mail devem permanecer associados entre as reservas.
+- Cada colaborador pode realizar no máximo dois agendamentos por mês.
+- Duas sessões no mesmo dia precisam ocupar horários consecutivos de 20 minutos para colaboradores comuns.
+- Somente quartas, sextas e dias extras liberados pela administração ficam disponíveis.
+- Hoje, dias passados, feriados, dias bloqueados e horários ocupados não podem ser escolhidos.
+- Usuários bloqueados não podem realizar agendamentos.
+- Reservas futuras podem ser editadas ou canceladas pelo colaborador.
+- O painel permite administrar os e-mails com permissão para agendar sem limites pessoais ou exigência de horários consecutivos.
+- O painel também permite bloquear e desbloquear e-mails; o bloqueio remove permissões administrativas e impede novos agendamentos.
 
-O **Zenith Massagem** é uma aplicação web desenvolvida para gerenciar agendamentos de sessões de massagem dentro de um ambiente corporativo. O sistema permite que colaboradores agendem horários de forma simples e intuitiva, enquanto administradores têm controle total sobre a gestão dos agendamentos, bloqueios de datas/horários e geração de relatórios.
+## Painel administrativo
 
-### Principais diferenciais:
-- Interface moderna com paleta **Azul Marinho + Cobre Dourado**
-- Armazenamento local via `localStorage` (sem necessidade de banco de dados)
-- Geração automática de **comprovantes em PDF**
-- Painel administrativo completo e responsivo
-- Popup motivacional para incentivar o bem-estar
+O arquivo `administrador.html` permite:
 
----
+- acompanhar agendamentos ativos e cancelados;
+- bloquear horários e dias;
+- liberar dias extras e novos meses;
+- consultar o histórico de alterações;
+- exportar relatórios em Excel.
 
-## ✨ Funcionalidades
+## Arquivos principais
 
-### 🖥️ Painel do Colaborador (`index.php`)
-- Formulário de agendamento com validação de e-mail corporativo
-- Calendário interativo com visualização de dias disponíveis
-- Seleção de horários disponíveis em tempo real
-- Consulta de agendamento existente por e-mail
-- Edição e cancelamento de agendamentos
-- Geração de comprovante em PDF (via jsPDF)
-- Verificação por código enviado por e-mail
-- Popup motivacional com frases sobre bem-estar
-- Auto-refresh automático a cada 130 segundos
-
-### 🔧 Painel do Administrador (`administrador1.php`)
-- **Visão Geral (Dashboard):**
-  - Estatísticas em tempo real (agendamentos ativos, cancelados, bloqueios)
-  - Ações rápidas para navegação
-- **Gerenciamento de Agendamentos:**
-  - Listagem de agendamentos ativos e cancelados
-  - Pesquisa por nome
-  - Filtro por data
-  - Edição e exclusão de agendamentos
-  - Exportação para Excel
-- **Bloqueios & Dias:**
-  - Bloquear/desbloquear horários específicos
-  - Liberar/remover/bloquear dias inteiros
-- **Liberação de Mês:**
-  - Liberação de meses para agendamento
-  - Notícia de liberação com data e horário
-- **Relatórios:**
-  - Relatório mensal exportável em Excel (XLSX)
-  - Relatório diário exportável em Excel (XLSX)
-- **Barra Superior:**
-  - Últimos agendamentos recentes
-  - Histórico de edições
-  - Botão de retorno rápido ao dashboard
-- **Sidebar retrátil** com estado persistido via `localStorage`
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-| Tecnologia | Uso |
-|---|---|
-| **HTML5** | Estrutura das páginas |
-| **CSS3** | Estilização completa (2300+ linhas) |
-| **JavaScript** | Lógica de negócio e interatividade (1900+ linhas) |
-| **PHP** | Wrapper das páginas e inclusão de templates |
-| **localStorage** | Persistência de dados no navegador |
-| **SweetAlert2** | Alertas e confirmações estilizados |
-| **jsPDF** | Geração de comprovantes em PDF |
-| **SheetJS (XLSX)** | Exportação de relatórios em Excel |
-| **Font Awesome 6** | Ícones profissionais na interface |
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-PrimeiroProjeto/
-├── index.php               # Página principal (agendamento do colaborador)
-├── agendador.html          # Template do formulário de agendamento
-├── administrador1.php      # Painel admin (versão com ícone personalizado)
-├── administrador2.php      # Painel admin (versão alternativa)
-├── administrador.html      # Template do painel administrativo
-├── script.js               # Lógica completa do sistema
-├── style.css               # Estilização de todas as páginas
-├── Zenith Logo.png         # Logo principal (tela de agendamento)
-├── Zenith Sidebar.png      # Logo da sidebar (painel admin)
-├── Icone Zenith.png        # Favicon/ícone da marca
-├── Massagem.png            # Imagem de fundo
-└── README.md               # Este arquivo
+```text
+index.html          Página pública de agendamento
+public.css          Identidade visual e responsividade do site público
+public.js           Fluxo de agendamento e consulta de reservas
+administrador.html  Painel administrativo
+admin-theme.css     Identidade visual do painel
+style.css           Estilos estruturais do painel
+script.js           Regras administrativas e persistência
+Zenith Logo.png     Marca principal
+Zenith Sidebar.png  Marca usada no painel
+Massagem.png        Imagem da experiência
 ```
 
----
+## Armazenamento
 
-## 🚀 Como Executar
+O projeto usa `localStorage`, sem banco de dados. A página pública e o painel administrativo compartilham as mesmas chaves, portanto os dados aparecem nos dois ambientes quando são acessados no mesmo navegador e domínio.
 
-### Pré-requisitos
-- Servidor web com suporte a PHP (Apache, Nginx, XAMPP, Laragon, etc.)
-- Navegador moderno (Chrome, Firefox, Edge)
+Para uso corporativo em produção com vários usuários simultâneos, recomenda-se conectar o fluxo a um banco de dados e a uma autenticação segura. O armazenamento local é indicado para demonstração ou uso em um único dispositivo.
 
-### Instalação
+## Publicação
 
-1. **Clone o repositório:**
-   ```bash
-   git clone https://github.com/Jhonata334/PrimeiroProjeto.git
-   ```
+O site é estático e pode ser publicado diretamente no GitHub Pages ou em outro serviço de hospedagem estática. O domínio configurado está no arquivo `CNAME`.
 
-2. **Mova para o diretório do servidor web:**
-   ```bash
-   # Exemplo com XAMPP:
-   cp -r PrimeiroProjeto/ C:/xampp/htdocs/
-
-   # Exemplo com Laragon:
-   cp -r PrimeiroProjeto/ C:/laragon/www/
-   ```
-
-3. **Inicie o servidor web** (Apache via XAMPP, Laragon, etc.)
-
-4. **Acesse no navegador:**
-   - Colaborador: `http://localhost/PrimeiroProjeto/`
-   - Administrador: `http://localhost/PrimeiroProjeto/administrador1.php`
-
----
-
-## 🔐 Credenciais de Acesso
-
-O sistema possui validação de e-mail corporativo e autenticação para o painel administrativo.
-
-| Perfil | E-mail | Senha |
-|---|---|---|
-| Admin 1 | `agendamento.massagem@zenithcorp.com.br` | `Zenith@123` |
-| Admin 2 | `jhonata.araujo@zenithcorp.com.br` | `ZenitH@123` |
-
-> **Nota:** Colaboradores devem usar e-mails com domínio `@zenithcorp.com.br` para agendar.
-
----
-
-## 🎨 Design
-
-O projeto utiliza uma paleta de cores **Azul Marinho + Cobre Dourado**, transmitindo sofisticação e profissionalismo:
-
-| Cor | Hex | Uso |
-|---|---|---|
-| Azul Marinho | `#1E3A5F` | Botões, títulos, destaques |
-| Azul Profundo | `#152C4A` | Hover, gradientes |
-| Azul Royal | `#2563EB` | Menu ativo da sidebar |
-| Sidebar | `#0F1F33` | Fundo da sidebar |
-| Cobre | `#C87533` | Detalhes accent |
-| Cobre Claro | `#D4943A` | Confirmações |
-
----
-
-## 📦 Dependências Externas (CDN)
-
-Todas as dependências são carregadas via CDN, sem necessidade de instalação:
-
-- [SweetAlert2](https://sweetalert2.github.io/) — Alertas elegantes
-- [jsPDF](https://github.com/parallax/jsPDF) — Geração de PDF
-- [SheetJS](https://sheetjs.com/) — Exportação Excel
-- [Font Awesome 6](https://fontawesome.com/) — Ícones
-- [disable-devtool](https://github.com/nickthecook/disable-devtool) — Proteção do console
-
----
-
-## 📄 Licença
-
-Este projeto é de uso privado. © 2026 Zenith Corp. Todos os direitos reservados.
-
----
-
-<div align="center">
-
-Desenvolvido com ❤️ para promover o bem-estar corporativo.
-
-</div>
+© 2026 Zenith Corp. Todos os direitos reservados.
